@@ -8,6 +8,8 @@
 #include "MathsLib/EmMaths.hpp"
 #include "Simulation.h"
 
+using namespace EmMaths;
+
 class CSimulation : public ISimulation
 {
 	virtual void Init() override
@@ -16,26 +18,28 @@ class CSimulation : public ISimulation
 		int spineParent = GetSkeletonBoneParentIndex(spine01);
 		const char* spineParentName = GetSkeletonBoneName(spineParent);
 
-		float posX, posY, posZ, quatW, quatX, quatY, quatZ;
+		Float3 bonePos;
+		Quaternion boneQuat;
+
 		size_t keyCount = GetAnimKeyCount("ThirdPersonWalk.anim");
-		GetAnimLocalBoneTransform("ThirdPersonWalk.anim", spineParent, keyCount / 2, posX, posY, posZ, quatW, quatX, quatY, quatZ);
+		GetAnimLocalBoneTransform("ThirdPersonWalk.anim", spineParent, keyCount / 2, bonePos, boneQuat);
 		
 		printf("Spine parent bone : %s\n", spineParentName);
 		printf("Anim key count : %ld\n", keyCount);
-		printf("Anim key : pos(%.2f,%.2f,%.2f) rotation quat(%.10f,%.10f,%.10f,%.10f)\n", posX, posY, posZ, quatW, quatX, quatY, quatZ);
+		printf("Anim key : pos(%.2f,%.2f,%.2f) rotation quat(%.10f,%.10f,%.10f,%.10f)\n", bonePos.x, bonePos.y, bonePos.z, boneQuat.d, boneQuat.a, boneQuat.b, boneQuat.c);
 	}
 
 	virtual void Update(float frameTime) override
 	{
-		EmMaths::Float3 zero;
+		Float3 zero;
 		
-		EmMaths::Float3 red (1,0,0);
-		EmMaths::Float3 green(0, 1, 0);
-		EmMaths::Float3 blue(0, 0, 1);
+		Float3 red (1,0,0);
+		Float3 green(0, 1, 0);
+		Float3 blue(0, 0, 1);
 
-		EmMaths::Float3 xAxis(100, 0, 0);
-		EmMaths::Float3 yAxis(0, 100, 0);
-		EmMaths::Float3 zAxis(0, 0, 100);
+		Float3 xAxis(100, 0, 0);
+		Float3 yAxis(0, 100, 0);
+		Float3 zAxis(0, 0, 100);
 
 
 		// X axis
