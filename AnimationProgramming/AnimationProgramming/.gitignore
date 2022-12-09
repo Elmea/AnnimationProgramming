@@ -1,0 +1,10 @@
+*.vs
+x64
+*.o
+*.d
+*.exe
+*.stackdump
+
+*/.vs
+*/Release
+*/Debug
