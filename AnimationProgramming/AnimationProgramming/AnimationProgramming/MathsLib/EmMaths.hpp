@@ -79,7 +79,7 @@ namespace EmMaths
         static Float3 getSphericalCoords(float r, float theta, float phi);
     };
 
-    inline bool operator==(const myMaths::Float3& f1, const myMaths::Float3& f2)
+    inline bool operator==(const EmMaths::Float3& f1, const EmMaths::Float3& f2)
     {
         return ((f1.x == f2.x) && (f1.y == f2.y) && (f1.z == f2.z));
     }
