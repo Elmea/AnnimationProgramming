@@ -169,42 +169,71 @@ namespace EmMaths
 
 #pragma endregion Matrix
 
-    // ----------------- [Misc] -----------------
+    // --------------- [Quaternion] ---------------
 
-    class Circle
+#pragma region Quaternion
+
+    class Quaternion
     {
     public:
-        Float2 center;
-        float radius;
+        float a;
+        float b;
+        float c;
+        float d;
+
+        Quaternion(float _a = 0, float _b = 0, float _c = 0, float _d = 0);
+        
+        void Normalize();
+        Quaternion GetNormalized();
+
+        float Modulus();
+        float SquaredModulus();
     };
 
-    typedef struct Triangle
-    {
-        Float2 vertex[3];
-    }Triangle;
+#pragma endregion
 
-    template <typename T>
-    T absoluteValue(T value)
+
+    // ------------------ [Misc] ------------------
+
+#pragma region Misc
+    namespace Misc
     {
-        if (value < 0)
-            return -value;
-        else
-            return value;
+        class Circle
+        {
+        public:
+            Float2 center;
+            float radius;
+        };
+
+        typedef struct Triangle
+        {
+            Float2 vertex[3];
+        }Triangle;
+
+        template <typename T>
+        T absoluteValue(T value)
+        {
+            if (value < 0)
+                return -value;
+            else
+                return value;
+        }
+
+        template <typename T>
+        T lerp(T a, T b, float t)
+        {
+            return a * (1 - t) + b * t;
+        }
+
+        float Pythagoreantheorem(int nb_values, ...);
+
+        float getPointYByLineEquation(Float2 line, Float2 point);
+
+        Float2 barrycentre(int nb_values, ...);
+
+        Float3 barrycentreF3(Float3 point1, Float3 point2, Float3 point3);
+
+        Float3 calcNormal(const Float3& p1, const Float3& p2, const Float3& p3);
     }
-
-    template <typename T>
-    T lerp(T a, T b, float t)
-    {
-        return a * (1 - t) + b * t;
-    }
-
-    float Pythagoreantheorem(int nb_values, ...);
-
-    float getPointYByLineEquation(Float2 line, Float2 point);
-
-    Float2 barrycentre(int nb_values, ...);
-
-    Float3 barrycentreF3(Float3 point1, Float3 point2, Float3 point3);
-
-    Float3 calcNormal(const Float3& p1, const Float3& p2, const Float3& p3);
+#pragma endregion
 }

@@ -598,6 +598,42 @@ namespace EmMaths
     }
 #pragma endregion
 
+    // --------------------------[Quaternion]--------------------------
+#pragma region Quaternion
+
+    Quaternion::Quaternion(float _a, float _b, float _c, float _d) : 
+        a(_a), b(_b), c(_c), d(_d)
+    {}
+
+    float Quaternion::SquaredModulus()
+    {
+        return a * a + b * b + c * c + d * d;
+    }
+
+    float Quaternion::Modulus()
+    {
+        return sqrtf(a * a + b * b + c * c + d * d);
+    }
+
+    void Quaternion::Normalize()
+    {
+        float mod = Modulus();
+
+        a /= mod;
+        b /= mod;
+        c /= mod;
+        d /= mod;
+    }
+
+    Quaternion Quaternion::GetNormalized()
+    {
+        float mod = Modulus();
+        
+        return { a / mod, b / mod, c / mod, d / mod };
+    }
+
+#pragma endregion
+
     // -----------------------------------------------------------------
 #pragma region Misc
     namespace Misc
