@@ -4,6 +4,8 @@
 #include "stdafx.h"
 
 #include "Engine.h"
+#include "Macros.h"
+#include "MathsLib/EmMaths.hpp"
 #include "Simulation.h"
 
 class CSimulation : public ISimulation
@@ -25,14 +27,25 @@ class CSimulation : public ISimulation
 
 	virtual void Update(float frameTime) override
 	{
-		// X axis
-		DrawLine(0, 0, 0, 100, 0, 0, 1, 0, 0);
+		EmMaths::Float3 zero;
+		
+		EmMaths::Float3 red (1,0,0);
+		EmMaths::Float3 green(0, 1, 0);
+		EmMaths::Float3 blue(0, 0, 1);
 
+		EmMaths::Float3 xAxis(100, 0, 0);
+		EmMaths::Float3 yAxis(0, 100, 0);
+		EmMaths::Float3 zAxis(0, 0, 100);
+
+
+		// X axis
+		DrawLine(zero, xAxis, red);
+		
 		// Y axis
-		DrawLine(0, 0, 0, 0, 100, 0, 0, 1, 0);
+		DrawLine(zero, yAxis, green);
 
 		// Z axis
-		DrawLine(0, 0, 0, 0, 0, 100, 0, 0, 1);
+		DrawLine(zero, zAxis, blue);
 
 	}
 };
