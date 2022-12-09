@@ -583,7 +583,7 @@ namespace EmMaths
     {
         float det = getDeterminent();
 
-        if (absoluteValue<float>(det) < 0.000005f)
+        if (Misc::absoluteValue<float>(det) < 0.000005f)
             return getIndentityMatrix();
 
         return getComplementaryMat() * (1.f / det);

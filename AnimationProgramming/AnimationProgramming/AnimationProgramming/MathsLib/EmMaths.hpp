@@ -1,8 +1,8 @@
 #pragma once
 #include <stdarg.h>
 
-#define MY_PI 3.14159265
-#define DEG2RAD MY_PI/180
+#define MY_PI 3.14159265f
+#define DEG2RAD MY_PI/180.0f
 #define RAD2DEG 180/MY_PI
 
 #define FLOATCOMPACCURATE 0.0001f
