@@ -1,43 +1,10 @@
 #include "EmMaths.hpp"
 #include <math.h>
 
-namespace myMaths
+namespace EmMaths
 {
-    float Clamp(const float value, const float min, const float max)
-    {
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
-    }
-
-    template <typename T>
-    T Min(const T& a, const T& b)
-    {
-        return a < b ? a : b;
-    }
-
-    template <typename T>
-    T Max(const T& a, const T& b)
-    {
-        return a > b ? a : b;
-    }
-
-    template <typename T>
-    T Abs(const T& a)
-    {
-        return a < 0 ? -a : a;
-    }
-
-    template <typename T>
-    T Lerp(const float t, const T& a, const T& b)
-    {
-        return t * a + (1 - t) * b;
-    }
-
-
     // ----------------------------[Float 2]----------------------------
+#pragma region Float2
 
     float Float2::crossProduct2D(Float2 other) const
     {
@@ -82,7 +49,11 @@ namespace myMaths
         return result;
     }
 
+#pragma endregion
+
     // ----------------------------[Float 3]----------------------------
+
+#pragma region Float3
 
     Float3::Float3(const float inx, const float iny, const float inz)
     {
@@ -140,7 +111,6 @@ namespace myMaths
         return { left.x - right.x, left.y - right.y, left.z - right.z };
     }
 
-
     Float3 Float3::operator*(float& multiplicator)
     {
         return { x * multiplicator, y * multiplicator, z * multiplicator };
@@ -155,7 +125,6 @@ namespace myMaths
     {
         return { left.x / divider, left.y / divider, left.z / divider };
     }
-
 
     Float3& operator+=(Float3& left, const Float3& right)
     {
@@ -180,7 +149,6 @@ namespace myMaths
         left = left / divider;
         return left;
     }
-
 
     Float3 Float3::operator*(int& multiplicator)
     {
@@ -247,8 +215,11 @@ namespace myMaths
                 r * sinf(theta) * sinf(phi) };
     }
 
+#pragma endregion
+
     // ----------------------------[Float 4]----------------------------
 
+#pragma region Float4
     Float4::Float4(float inx, float iny, float inz, float inw)
     {
         x = inx;
@@ -328,8 +299,10 @@ namespace myMaths
     {
         return { x, y, z };
     }
+#pragma endregion
 
     // ----------------------------[Matrix]----------------------------
+#pragma region MyRegion
 
     void Mat4::operator=(const Mat4& other)
     {
@@ -623,93 +596,133 @@ namespace myMaths
 
         return (Float4) ( mat[index][0], mat[index][1], mat[index][2], mat[index][3] );
     }
+#pragma endregion
 
     // -----------------------------------------------------------------
-    float Pythagoreantheorem(int nb_values, ...)
+#pragma region Misc
+    namespace Misc
     {
-        va_list args;
-        float nextValue;
-        float result;
-
-        va_start(args, nb_values);
-
-        result = 0;
-        for (int i = 0; i < nb_values; i++)
+        float Clamp(const float value, const float min, const float max)
         {
-            nextValue = va_arg(args, double);
-            result += nextValue * nextValue;
+            if (value < min)
+                return min;
+            if (value > max)
+                return max;
+            return value;
         }
-        va_end(args);
 
-        return sqrt(result);
-    }
-
-    float getPointYByLineEquation(Float2 line, Float2 point)
-    {
-        return line.x * point.x + line.y;
-    }
-
-    Float2 barrycentre(int nb_values, ...)
-    {
-        va_list args;
-        Float2 nextValue;
-        Float2 result = { 0, 0 };
-
-        va_start(args, nb_values);
-
-        for (int i = 0; i < nb_values; i++)
+        template <typename T>
+        T Min(const T& a, const T& b)
         {
-            nextValue = va_arg(args, Float2);
-            result.x += nextValue.x;
-            result.y += nextValue.y;
+            return a < b ? a : b;
         }
-        va_end(args);
 
-        result.x = result.x / nb_values;
-        result.y = result.y / nb_values;
+        template <typename T>
+        T Max(const T& a, const T& b)
+        {
+            return a > b ? a : b;
+        }
 
-        return result;
+        template <typename T>
+        T Abs(const T& a)
+        {
+            return a < 0 ? -a : a;
+        }
+
+        template <typename T>
+        T Lerp(const float t, const T& a, const T& b)
+        {
+            static_assert(T is float || T is int, "Not a float or a int");
+            return t * a + (1 - t) * b;
+        }
+
+        float Pythagoreantheorem(int nb_values, ...)
+        {
+            va_list args;
+            float nextValue;
+            float result;
+
+            va_start(args, nb_values);
+
+            result = 0;
+            for (int i = 0; i < nb_values; i++)
+            {
+                nextValue = va_arg(args, double);
+                result += nextValue * nextValue;
+            }
+            va_end(args);
+
+            return sqrt(result);
+        }
+
+        float getPointYByLineEquation(Float2 line, Float2 point)
+        {
+            return line.x * point.x + line.y;
+        }
+
+        Float2 barrycentre(int nb_values, ...)
+        {
+            va_list args;
+            Float2 nextValue;
+            Float2 result = { 0, 0 };
+
+            va_start(args, nb_values);
+
+            for (int i = 0; i < nb_values; i++)
+            {
+                nextValue = va_arg(args, Float2);
+                result.x += nextValue.x;
+                result.y += nextValue.y;
+            }
+            va_end(args);
+
+            result.x = result.x / nb_values;
+            result.y = result.y / nb_values;
+
+            return result;
+        }
+
+        Float3 barrycentreF3(Float3 point1, Float3 point2, Float3 point3)
+        {
+            Float3 result = { 0, 0, 0 };
+
+            result.x += point1.x + point2.x + point3.x;
+            result.y += point1.y + point2.y + point3.y;
+            result.z += point1.z + point2.z + point3.z;
+
+            result.x = result.x / 3;
+            result.y = result.y / 3;
+            result.z = result.z / 3;
+
+            return result;
+        }
+
+        Float3 calcNormal(const Float3& p1, const Float3& p2, const Float3& p3)
+        {
+            Float3 result{ 0 };
+            // Calculate vectors
+            float var1x = p2.x - p1.x;
+            float var1y = p2.y - p1.y;
+            float var1z = p2.z - p1.z;
+
+            float var2x = p3.x - p1.x;
+            float var2y = p3.y - p1.y;
+            float var2z = p3.z - p1.z;
+
+            // Get cross product of vectors
+            result.x = (var1y * var2z) - (var2y * var1z);
+            result.y = (var1z * var2x) - (var2z * var1x);
+            result.z = (var1x * var2y) - (var2x * var1y);
+
+            // Normalise final vector
+            float vLen = sqrtf((result.x * result.x) + (result.y * result.y) + (result.z * result.z));
+
+            result.x = result.x / vLen;
+            result.y = result.y / vLen;
+            result.z = result.z / vLen;
+
+            return result;
+        }
     }
-
-    Float3 barrycentreF3(Float3 point1, Float3 point2, Float3 point3)
-    {
-        Float3 result = { 0, 0, 0 };
-
-        result.x += point1.x + point2.x + point3.x;
-        result.y += point1.y + point2.y + point3.y;
-        result.z += point1.z + point2.z + point3.z;
-
-        result.x = result.x / 3;
-        result.y = result.y / 3;
-        result.z = result.z / 3;
-
-        return result;
-    }
-
-    Float3 calcNormal(const Float3& p1, const Float3& p2, const Float3& p3)
-    {
-        Float3 result{ 0 };
-        // Calculate vectors
-        float var1x = p2.x - p1.x;
-        float var1y = p2.y - p1.y;
-        float var1z = p2.z - p1.z;
-
-        float var2x = p3.x - p1.x;
-        float var2y = p3.y - p1.y;
-        float var2z = p3.z - p1.z;
-
-        // Get cross product of vectors
-        result.x = (var1y * var2z) - (var2y * var1z);
-        result.y = (var1z * var2x) - (var2z * var1x);
-        result.z = (var1x * var2y) - (var2x * var1y);
-
-        // Normalise final vector
-        float vLen = sqrtf((result.x * result.x) + (result.y * result.y) + (result.z * result.z));
-
-        result.x = result.x / vLen;
-        result.y = result.y / vLen;
-        result.z = result.z / vLen;
-
-        return result;
-    }
+#pragma endregion
 }

@@ -7,7 +7,7 @@
 
 #define FLOATCOMPACCURATE 0.0001f
 
-namespace myMaths
+namespace EmMaths
 {
 
     // ----------------- [Vector] -----------------
