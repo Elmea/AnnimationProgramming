@@ -5,9 +5,9 @@
 class Transform
 {
 public :
-	EmMaths::Float3 position;
+	EmMaths::Float3 position = { 0, 0, 0 };
 	EmMaths::Quaternion rotation;
-	EmMaths::Float3 scale;
+	EmMaths::Float3 scale = { 1, 1, 1 };
 
 public:
 
@@ -23,6 +23,12 @@ public:
 	Transform operator+(const Transform& other)
 	{
 		return Transform(this->position + other.position, this->rotation + other.rotation, this->scale + other.scale);
+	}
+
+
+	EmMaths::Mat4 GetTransformMatrix()
+	{
+		EmMaths::Mat4::CreateTransformMatrix(position, rotation, scale);
 	}
 };
 
