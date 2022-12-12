@@ -5,7 +5,6 @@
 #define RAD2DEG 180/MY_PI
 
 #define FLOATCOMPACCURATE 0.0001f
-#include <sys/stat.h>
 
 namespace EmMaths
 {
@@ -197,6 +196,8 @@ namespace EmMaths
         float Modulus();
         float SquaredModulus();
 
+        Mat4 GetRotationMatrix();
+        
         static Quaternion Hamilton(const Quaternion& right, const Quaternion& left);
         
         //Return a Quaternion from corresponding Euler Angles
@@ -244,10 +245,7 @@ namespace EmMaths
             return a < 0 ? -a : a;
         }
 
-        float Lerp(const float t, const float& a, const float& b)
-        {
-            return t * a + (1 - t) * b;
-        }
+        float Lerp(const float& t, const float& a, const float& b);
         
         float Pythagoreantheorem(int nb_values, ...);
 

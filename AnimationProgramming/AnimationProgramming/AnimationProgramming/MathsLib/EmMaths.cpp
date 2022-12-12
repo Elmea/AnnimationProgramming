@@ -79,6 +79,37 @@ namespace EmMaths
         return x * vec3.x + y * vec3.y + z * vec3.z;
     }
 
+    float Float3::magnitude()
+    {
+        return sqrtf(x * x + y * y + z * z);
+    }
+
+    void Float3::normalize()
+    {
+        float mag = magnitude();
+
+        x = x / mag;
+        y = y / mag;
+        z = z / mag;
+    }
+
+    Float3 Float3::getNormalized()
+    {
+        float mag = magnitude();
+
+        return {x / mag, y / mag, z / mag};
+    }
+
+    Float3 Float3::getSphericalCoords(float r, float theta, float phi)
+    {
+        return {
+            r * sinf(theta) * cosf(phi),
+            r * cosf(theta),
+            r * sinf(theta) * sinf(phi)
+        };
+    }
+
+    #pragma region operators
     Float3 Float3::operator+(Float3& other)
     {
         Float3 result;
@@ -187,36 +218,7 @@ namespace EmMaths
         else
             return false;
     }
-
-    float Float3::magnitude()
-    {
-        return sqrtf(x * x + y * y + z * z);
-    }
-
-    void Float3::normalize()
-    {
-        float mag = magnitude();
-
-        x = x / mag;
-        y = y / mag;
-        z = z / mag;
-    }
-
-    Float3 Float3::getNormalized()
-    {
-        float mag = magnitude();
-
-        return {x / mag, y / mag, z / mag};
-    }
-
-    Float3 Float3::getSphericalCoords(float r, float theta, float phi)
-    {
-        return {
-            r * sinf(theta) * cosf(phi),
-            r * cosf(theta),
-            r * sinf(theta) * sinf(phi)
-        };
-    }
+    #pragma endregion 
 
 #pragma endregion
 
@@ -610,6 +612,7 @@ namespace EmMaths
     // --------------------------[Quaternion]--------------------------
 #pragma region Quaternion
 
+    #pragma region Constructors
     Quaternion::Quaternion() : a(0), b(0), c(0), d(0)
     {}
     
@@ -626,7 +629,8 @@ namespace EmMaths
     {
         *this = Euler(eulerAngles);
     }
-    
+    #pragma endregion
+
     float Quaternion::SquaredModulus()
     {
         return a * a + b * b + c * c + d * d;
@@ -636,7 +640,7 @@ namespace EmMaths
     {
         return sqrtf(a * a + b * b + c * c + d * d);
     }
-
+    
     void Quaternion::Normalize()
     {
         float mod = Modulus();
@@ -645,6 +649,14 @@ namespace EmMaths
         b /= mod;
         c /= mod;
         d /= mod;
+    }
+
+    Mat4 Quaternion::GetRotationMatrix()
+    {
+        /*return {(2 * (a*a + b*b), 0, 0, 0),
+                (0, 0, 0, 0),
+                (0, 0, 0, 0),
+                (0, 0, 0, 0) };*/
     }
 
     Quaternion Quaternion::GetNormalized()
@@ -689,7 +701,8 @@ namespace EmMaths
     {
         return Euler(EulerAngles.x, EulerAngles.y, EulerAngles.z);
     }
-    
+
+    #pragma region Operators
     Quaternion Quaternion::operator*(const Quaternion& other) const
     {
         return Hamilton(*this, other);
@@ -699,6 +712,7 @@ namespace EmMaths
     {
         return {this->a + other.a, this->b + other.b, this->c + other.c, this->d + other.d};
     }
+    #pragma endregion
 
 #pragma endregion
 
@@ -706,6 +720,11 @@ namespace EmMaths
 #pragma region Misc
     namespace Misc
     {
+        float Lerp(const float& t, const float& a, const float& b)
+        {
+            return t * a + (1 - t) * b;
+        }
+        
         float Clamp(const float value, const float min, const float max)
         {
             if (value < min)
