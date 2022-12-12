@@ -128,6 +128,8 @@ namespace EmMaths
     // ----------------- [Matrix] -----------------
 #pragma region Matrix
 
+    class Quaternion;
+    
     class Mat4
     {
     private:
@@ -155,6 +157,7 @@ namespace EmMaths
         void operator=(const float matrix[4][4]);
 
         static Mat4 CreateTransformMatrix(const Float3& position, const Float3& rotationDEG, const Float3& scale);
+        static Mat4 CreateTransformMatrix(const Float3& position, const Quaternion& rotation, const Float3& scale);
 
         Mat4 operator*(const Mat4& other);
         Float4 operator*(const Float4& ft4);

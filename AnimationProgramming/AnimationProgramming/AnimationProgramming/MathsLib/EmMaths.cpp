@@ -498,6 +498,11 @@ namespace EmMaths
             * getRotationZ(DEG2RAD * rotationDEG.z) * getScale(scale);
     }
 
+    Mat4 Mat4::CreateTransformMatrix(const Float3& position, const Quaternion& rotation, const Float3& scale)
+    {
+        return getTranslation(position) * rotation.GetRotationMatrix() * getScale(scale);  
+    }
+    
     Mat4 Mat4::getTransposedMatrix()
     {
         Mat4 result;
