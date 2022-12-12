@@ -42,6 +42,12 @@
     <ClInclude Include="Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AnimBone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -53,9 +59,18 @@
     <ClCompile Include="MathsLib\EmMaths.cpp">
       <Filter>Maths</Filter>
     </ClCompile>
+    <ClCompile Include="AnimBone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Resources\skinning.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Data\Resources\skinning.ps">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

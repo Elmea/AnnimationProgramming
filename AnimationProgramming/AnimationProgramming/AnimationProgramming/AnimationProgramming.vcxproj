@@ -155,20 +155,25 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimBone.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MathsLib\EmMaths.hpp" />
     <ClInclude Include="Simulation.h" />
+    <ClInclude Include="src\Transform.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationProgramming.cpp" />
+    <ClCompile Include="AnimBone.cpp" />
     <ClCompile Include="MathsLib\EmMaths.cpp" />
+    <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Data\Resources\skinning.ps" />
     <None Include="..\Data\Resources\skinning.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
