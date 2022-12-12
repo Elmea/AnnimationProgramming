@@ -1,15 +1,14 @@
 #pragma once
-#include <stdarg.h>
 
 #define MY_PI 3.14159265f
 #define DEG2RAD MY_PI/180.0f
 #define RAD2DEG 180/MY_PI
 
 #define FLOATCOMPACCURATE 0.0001f
+#include <sys/stat.h>
 
 namespace EmMaths
 {
-
     // ----------------- [Vector] -----------------
 #pragma region Vector
 
@@ -19,17 +18,17 @@ namespace EmMaths
         float x;
         float y;
 
-        float crossProduct2D(Float2 other) const;
+        float CrossProduct2D(Float2 other) const;
 
-        float dotProduct(Float2* other) const;
+        float DotProduct(const Float2* other) const;
 
-        void planRotation(float angle);
+        void PlanRotation(float angle);
 
         Float2 operator+(Float2& other);
         Float2 operator*(float& multiplicator);
-        bool operator==(Float2 other) { return (x == other.x) && (y == other.y); }
+        bool operator==(Float2& other) { return (x == other.x) && (y == other.y); }
 
-        float magnitude();
+        float Magnitude();
 
         Float2 operator/(float divider);
     };
@@ -41,9 +40,9 @@ namespace EmMaths
         float y;
         float z;
 
-        Float3 crossProduct(const Float3& other) const;
+        Float3 CrossProduct(const Float3& other) const;
 
-        float dotProduct(const Float3 vec3) const;
+        float DotProduct(const Float3 vec3) const;
 
         Float3 operator+(Float3& other);
         Float3 operator-(Float3& other);
@@ -73,8 +72,14 @@ namespace EmMaths
         void normalize();
 
         Float3 getNormalized();
-        bool operator==(Float3 other) { return (x <= other.x + FLOATCOMPACCURATE && x >= other.x - FLOATCOMPACCURATE) && (y <= other.y + FLOATCOMPACCURATE && y >= other.y - FLOATCOMPACCURATE) && (z <= other.z + FLOATCOMPACCURATE && z >= other.z - FLOATCOMPACCURATE); }
-    
+
+        bool operator==(Float3 other)
+        {
+            return (x <= other.x + FLOATCOMPACCURATE && x >= other.x - FLOATCOMPACCURATE) && (y <= other.y +
+                FLOATCOMPACCURATE && y >= other.y - FLOATCOMPACCURATE) && (z <= other.z + FLOATCOMPACCURATE && z >=
+                other.z - FLOATCOMPACCURATE);
+        }
+
 
         static Float3 getSphericalCoords(float r, float theta, float phi);
     };
@@ -127,7 +132,6 @@ namespace EmMaths
     class Mat4
     {
     private:
-
         Mat4 getSubmat(int l, int c);
 
     public:
@@ -138,10 +142,12 @@ namespace EmMaths
         static Mat4 getTranslation(const Float3& translation);
         static Mat4 getScale(const Float3& scale);
 
-        float mat[4][4] = { {1.f, 0.f, 0.f, 0.f},
-                           {0.f, 1.f, 0.f, 0.f},
-                           {0.f, 0.f, 1.f, 0.f},
-                           {0.f, 0.f, 0.f, 1.f} };
+        float mat[4][4] = {
+            {1.f, 0.f, 0.f, 0.f},
+            {0.f, 1.f, 0.f, 0.f},
+            {0.f, 0.f, 1.f, 0.f},
+            {0.f, 0.f, 0.f, 1.f}
+        };
 
         void operator=(const Mat4& other);
         void operator=(const float matrix[4][4]);
@@ -170,7 +176,6 @@ namespace EmMaths
 #pragma endregion Matrix
 
     // --------------- [Quaternion] ---------------
-
 #pragma region Quaternion
 
     class Quaternion
@@ -181,20 +186,31 @@ namespace EmMaths
         float c;
         float d;
 
-        Quaternion(float _a = 0, float _b = 0, float _c = 0, float _d = 0);
-        
+        Quaternion();
+        Quaternion(const float& _a, const float& _b, const float& _c, const float& _d);
+        Quaternion(const float& roll, const float& pitch, const float& yaw);
+        Quaternion(const Float3&  eulerAngles);
+
         void Normalize();
         Quaternion GetNormalized();
 
         float Modulus();
         float SquaredModulus();
+
+        static Quaternion Hamilton(const Quaternion& right, const Quaternion& left);
+        
+        //Return a Quaternion from corresponding Euler Angles
+        static Quaternion Euler(const float& roll, const float& pitch, const float& yaw);
+        //Return a Quaternion from corresponding Euler Angles
+        static Quaternion Euler(const Float3& eulerAngles);
+        
+        Quaternion operator*(const Quaternion& other) const;
+        Quaternion operator+(const Quaternion& other) const;
     };
 
 #pragma endregion
 
-
     // ------------------ [Misc] ------------------
-
 #pragma region Misc
     namespace Misc
     {
@@ -208,23 +224,31 @@ namespace EmMaths
         typedef struct Triangle
         {
             Float2 vertex[3];
-        }Triangle;
+        } Triangle;
 
         template <typename T>
-        T absoluteValue(T value)
+        T Min(const T& a, const T& b)
         {
-            if (value < 0)
-                return -value;
-            else
-                return value;
+            return a < b ? a : b;
         }
 
         template <typename T>
-        T lerp(T a, T b, float t)
+        T Max(const T& a, const T& b)
         {
-            return a * (1 - t) + b * t;
+            return a > b ? a : b;
+        }
+        
+        template <typename T>
+        T Abs(const T& a)
+        {
+            return a < 0 ? -a : a;
         }
 
+        float Lerp(const float t, const float& a, const float& b)
+        {
+            return t * a + (1 - t) * b;
+        }
+        
         float Pythagoreantheorem(int nb_values, ...);
 
         float getPointYByLineEquation(Float2 line, Float2 point);
