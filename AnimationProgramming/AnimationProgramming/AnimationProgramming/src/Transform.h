@@ -10,7 +10,10 @@ public :
 	EmMaths::Float3 scale;
 
 public:
-	Transform(EmMaths::Float3 position_ = 0, EmMaths::Quaternion rotation_ = 0, EmMaths::Float3 scale_ = 0) :
+
+	Transform(){};
+
+	Transform(EmMaths::Float3 position_, EmMaths::Quaternion rotation_ , EmMaths::Float3 scale_) :
 		position(position_),
 		rotation(rotation_),
 		scale(scale_)
