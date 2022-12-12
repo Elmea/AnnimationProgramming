@@ -134,6 +134,9 @@ namespace EmMaths
         Mat4 getSubmat(int l, int c);
 
     public:
+        Mat4();
+        Mat4(float matrix[4][4]);
+        
         static Mat4 getRotationX(const float& angle);
         static Mat4 getRotationY(const float& angle);
         static Mat4 getRotationZ(const float& angle);
@@ -180,23 +183,21 @@ namespace EmMaths
     class Quaternion
     {
     public:
-        float a;
-        float b;
-        float c;
-        float d;
+        float a, b, c, d;
 
         Quaternion();
         Quaternion(const float& _a, const float& _b, const float& _c, const float& _d);
         Quaternion(const float& roll, const float& pitch, const float& yaw);
-        Quaternion(const Float3&  eulerAngles);
+        Quaternion(const Float3& eulerAngles);
 
         void Normalize();
-        Quaternion GetNormalized();
+        Quaternion GetNormalized() const; 
 
-        float Modulus();
-        float SquaredModulus();
+        float Modulus() const;
+        float SquaredModulus() const;
 
-        Mat4 GetRotationMatrix();
+        //Return corresponding rotation matrix
+        Mat4 GetRotationMatrix() const;
         
         static Quaternion Hamilton(const Quaternion& right, const Quaternion& left);
         

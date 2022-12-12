@@ -308,6 +308,20 @@ namespace EmMaths
     // ----------------------------[Matrix]----------------------------
 #pragma region Matrix
 
+    Mat4::Mat4()
+    {}
+    
+    Mat4::Mat4(float matrix[4][4])
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                mat[i][j] = matrix[i][j];
+            }
+        }
+    }
+    
     void Mat4::operator=(const Mat4& other)
     {
         for (int i = 0; i < 4; i++)
@@ -631,12 +645,12 @@ namespace EmMaths
     }
     #pragma endregion
 
-    float Quaternion::SquaredModulus()
+    float Quaternion::SquaredModulus() const
     {
         return a * a + b * b + c * c + d * d;
     }
 
-    float Quaternion::Modulus()
+    float Quaternion::Modulus() const
     {
         return sqrtf(a * a + b * b + c * c + d * d);
     }
@@ -651,15 +665,18 @@ namespace EmMaths
         d /= mod;
     }
 
-    Mat4 Quaternion::GetRotationMatrix()
+    Mat4 Quaternion::GetRotationMatrix() const
     {
-        /*return {(2 * (a*a + b*b), 0, 0, 0),
-                (0, 0, 0, 0),
-                (0, 0, 0, 0),
-                (0, 0, 0, 0) };*/
+        float matrix[4][4] =
+            {{2*(a*a + b*b) - 1,    2*(b*c - d*a),      2*(b*d + c*a),  0},
+            {2*(b*c + d*a),         2*(a*a + c*c) - 1,  2*(c*d - b*a),  0},
+            {2*(b*d - c*a),         2*(c*d + b*a),      2*(a*a + d*d),  0},
+            {0,                     0,                  0,              1.f} };
+        
+        return matrix;
     }
 
-    Quaternion Quaternion::GetNormalized()
+    Quaternion Quaternion::GetNormalized() const
     {
         float mod = Modulus();
 
