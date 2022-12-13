@@ -1,92 +1,20 @@
 // AnimationProgramming.cpp : Defines the entry point for the console application.
 //
-
 #include "stdafx.h"
 
 #include "Engine.h"
 #include "Macros.h"
-#include "MathsLib/EmMaths.hpp"
 #include "Simulation.h"
 
 #include "AnimBone.h"
-
 #include "src/Transform.h"
+#include "src/AnimSkeleton.h"
 
-#include <vector>
+#include "MathsLib/EmMaths.hpp"
+
 #include <iostream>
 
 using namespace EmMaths;
-
-class AnimSkeleton
-{
-public :
-	std::vector<AnimBone> skeletonBones = std::vector<AnimBone>();
-	size_t boneCount = 0;
-
-public :
-	void InitSkeleton()
-	{
-		boneCount = GetSkeletonBoneCount();
-
-		printf("Bones count : %d\n", boneCount);
-
-		//skeletonBones.reserve(boneCount); //Crash Somehow try to reserve 8k bones ?
-
-		for (size_t i = 0; i < boneCount; i++)
-		{
-			AnimBone newBone;
-
-			newBone.index = i;
-			newBone.name = GetSkeletonBoneName(i);
-			newBone.parentIndex = GetSkeletonBoneParentIndex(i);
-
-			std::cout << "Bone " << newBone.index << " : Name : " << newBone.name << " : Index Parent Bone : " << newBone.parentIndex << std::endl; //Printf cause crash
-
-			skeletonBones.push_back(newBone);
-		}
-	}
-
-	void DrawSkeletonInEngine()
-	{
-		const Float3 drawOffset = {10,0,0}; //TODO : Imgui parameters
-
-		Float3 drawColor = { 1,0,1 };
-
-		for (const AnimBone& bone : skeletonBones)
-		{
-			if (bone.parentIndex < 0)
-			{
-				continue;
-			}
-				Transform boneTransform = GetBoneWorldPos(bone.index);
-				Transform parentTransform = GetBoneWorldPos(bone.parentIndex);
-
-				boneTransform.position += drawOffset;
-				parentTransform.position += drawOffset;
-
-				DrawLine(boneTransform, parentTransform, drawColor);
-		}
-	}
-
-	//TODO : Do a recursive function
-	Transform GetBoneWorldPos(const int& boneIndex)
-	{
-		Transform worldPos;
-
-		AnimBone ParentBone = this->skeletonBones.at(boneIndex);
-
-		while (ParentBone.index > 0)
-		{
-			Transform parentRelativePos;
-			GetSkeletonBoneLocalBindTransform(ParentBone.index, parentRelativePos);
-			worldPos = worldPos + parentRelativePos;
-
-			ParentBone = skeletonBones.at(ParentBone.parentIndex);
-		}
-
-		return worldPos;
-	}
-};
 
 class CSimulation : public ISimulation
 {
@@ -95,6 +23,7 @@ class CSimulation : public ISimulation
 	virtual void Init() override
 	{
 		skeleton.InitSkeleton();
+
 		//Float3 bonePos;
 		//Quaternion boneQuat;
 

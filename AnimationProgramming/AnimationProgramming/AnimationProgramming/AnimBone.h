@@ -8,6 +8,6 @@ class AnimBone
 {
 public :
 	std::string name = "";
-	int parentIndex = 0;
+	int parentIndex = -1; //No parent by default
 	int index = 0;
 };

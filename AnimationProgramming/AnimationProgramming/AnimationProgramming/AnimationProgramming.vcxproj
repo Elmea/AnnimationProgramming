@@ -161,6 +161,9 @@
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MathsLib\EmMaths.hpp" />
     <ClInclude Include="Simulation.h" />
+    <ClInclude Include="src\AnimClip.h" />
+    <ClInclude Include="src\AnimPose.h" />
+    <ClInclude Include="src\AnimSkeleton.h" />
     <ClInclude Include="src\Transform.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -168,7 +171,12 @@
   <ItemGroup>
     <ClCompile Include="AnimationProgramming.cpp" />
     <ClCompile Include="AnimBone.cpp" />
+    <ClCompile Include="Macros.cpp" />
     <ClCompile Include="MathsLib\EmMaths.cpp" />
+    <ClCompile Include="src\AnimClip.cpp" />
+    <ClCompile Include="src\AnimPos.cpp" />
+    <ClCompile Include="src\AnimPose.cpp" />
+    <ClCompile Include="src\AnimSkeleton.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
