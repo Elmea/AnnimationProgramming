@@ -48,7 +48,7 @@ public :
 
 	void DrawSkeletonInEngine()
 	{
-		const Float3 drawOffset = {10,0,0}; //TODO : Imgui parameters
+		const Float3 drawOffset = {200,0,0}; //TODO : Imgui parameters
 
 		Float3 drawColor = { 1,0,1 };
 
@@ -58,33 +58,48 @@ public :
 			{
 				continue;
 			}
-				Transform boneTransform = GetBoneWorldPos(bone.index);
-				Transform parentTransform = GetBoneWorldPos(bone.parentIndex);
+			
+			Float3 bonePos;
+			EmMaths::Mat4 boneMat = GetBoneWorldPosRecursif(bone.index);
 
-				boneTransform.position += drawOffset;
-				parentTransform.position += drawOffset;
+			bonePos.x = boneMat.mat[0][3];
+			bonePos.y = boneMat.mat[1][3];
+			bonePos.z = boneMat.mat[2][3];
 
-				DrawLine(boneTransform, parentTransform, drawColor);
+			EmMaths::Mat4 parentBoneMat = GetBoneWorldPosRecursif(bone.parentIndex);
+
+			Float3 parentBonePos;
+
+			parentBonePos.x = parentBoneMat.mat[0][3];
+			parentBonePos.y = parentBoneMat.mat[1][3];
+			parentBonePos.z = parentBoneMat.mat[2][3];
+
+			bonePos += drawOffset;
+			parentBonePos += drawOffset;
+
+			DrawLine(bonePos, parentBonePos, drawColor);
 		}
 	}
 
-	//TODO : Do a recursive function
-	Transform GetBoneWorldPos(const int& boneIndex)
+	EmMaths::Mat4 GetBoneWorldPosRecursif(const int& boneIndex)
 	{
-		Transform worldPos;
-
-		AnimBone ParentBone = this->skeletonBones.at(boneIndex);
-
-		while (ParentBone.index > 0)
+		Transform boneLocalTransform;
+		EmMaths::Mat4 boneWorldMat;
+		AnimBone bone = this->skeletonBones.at(boneIndex);
+		
+		//Root ou autre
+		if (boneIndex <= 0)
 		{
-			Transform parentRelativePos;
-			GetSkeletonBoneLocalBindTransform(ParentBone.index, parentRelativePos);
-			worldPos = worldPos + parentRelativePos;
-
-			ParentBone = skeletonBones.at(ParentBone.parentIndex);
+			GetSkeletonBoneLocalBindTransform(0, boneLocalTransform);
+			boneWorldMat = boneLocalTransform.GetTransformMatrix();
+			return boneWorldMat;
 		}
-
-		return worldPos;
+		else
+		{
+			GetSkeletonBoneLocalBindTransform(boneIndex, boneLocalTransform);
+			boneWorldMat = boneLocalTransform.GetTransformMatrix();
+			return GetBoneWorldPosRecursif(bone.parentIndex) * boneWorldMat;
+		}
 	}
 };
 
@@ -95,6 +110,7 @@ class CSimulation : public ISimulation
 	virtual void Init() override
 	{
 		skeleton.InitSkeleton();
+
 		//Float3 bonePos;
 		//Quaternion boneQuat;
 
