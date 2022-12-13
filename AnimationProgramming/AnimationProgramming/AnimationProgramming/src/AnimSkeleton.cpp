@@ -14,8 +14,6 @@ void AnimSkeleton::InitSkeleton()
 
 	printf("Bones count : %d\n", boneCount);
 
-	//skeletonBones.reserve(boneCount); //Crash Somehow try to reserve 8k bones ?
-
 	for (size_t i = 0; i < boneCount; i++)
 	{
 		AnimBone newBone;
@@ -68,20 +66,17 @@ void AnimSkeleton::DrawSkeletonInEngine()
 EmMaths::Mat4 AnimSkeleton::GetBoneWorldPosRecursif(const int& boneIndex)
 {
 	Transform boneLocalTransform;
-	EmMaths::Mat4 boneWorldMat;
-	AnimBone bone = this->skeletonBones.at(boneIndex);
 
-	//Root ou autre
-	if (boneIndex <= 0)
+	if (boneIndex <= 0) //Root bone or error
 	{
 		GetSkeletonBoneLocalBindTransform(0, boneLocalTransform);
-		boneWorldMat = boneLocalTransform.GetTransformMatrix();
-		return boneWorldMat;
+		return boneLocalTransform.GetTransformMatrix();
 	}
 	else
 	{
+		AnimBone bone = this->skeletonBones.at(boneIndex);
 		GetSkeletonBoneLocalBindTransform(boneIndex, boneLocalTransform);
-		boneWorldMat = boneLocalTransform.GetTransformMatrix();
-		return GetBoneWorldPosRecursif(bone.parentIndex) * boneWorldMat;
+
+		return GetBoneWorldPosRecursif(bone.parentIndex) * boneLocalTransform.GetTransformMatrix();
 	}
 }

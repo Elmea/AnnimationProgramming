@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../AnimBone.h"
+#include "AnimClip.h"
 
 #include "../MathsLib/EmMaths.hpp"
 
@@ -10,6 +11,8 @@ class AnimSkeleton
 {
 public:
 	std::vector<AnimBone> skeletonBones = std::vector<AnimBone>();
+	std::vector<AnimClip> animationsClips;
+
 	size_t boneCount = 0;
 
 public:
