@@ -6,8 +6,8 @@ class Transform
 {
 public :
 	EmMaths::Float3 position = { 0, 0, 0 };
-	EmMaths::Quaternion rotation;
-	EmMaths::Float3 scale = { 1, 1, 1 };
+	EmMaths::Quaternion rotation = {0,0,0,0};
+	EmMaths::Float3 scale = {1, 1, 1 };
 
 public:
 
