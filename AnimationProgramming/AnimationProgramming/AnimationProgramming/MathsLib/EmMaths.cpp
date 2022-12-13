@@ -321,6 +321,8 @@ namespace EmMaths
             }
         }
     }
+
+    #pragma region Operators
     
     void Mat4::operator=(const Mat4& other)
     {
@@ -395,8 +397,7 @@ namespace EmMaths
         }
         return result;
     }
-
-
+    
     Mat4 Mat4::operator*(const int& mult)
     {
         Mat4 result;
@@ -426,6 +427,8 @@ namespace EmMaths
         return result;
     }
 
+    #pragma endregion
+    
     Mat4 Mat4::getRotationX(const float& angle)
     {
         Mat4 result;
@@ -675,7 +678,7 @@ namespace EmMaths
         float matrix[4][4] =
             {{2*(a*a + b*b) - 1,    2*(b*c - d*a),      2*(b*d + c*a),  0},
             {2*(b*c + d*a),         2*(a*a + c*c) - 1,  2*(c*d - b*a),  0},
-            {2*(b*d - c*a),         2*(c*d + b*a),      2*(a*a + d*d),  0},
+            {2*(b*d - c*a),         2*(c*d + b*a),      2*(a*a + d*d) - 1,  0},
             {0,                     0,                  0,              1.f} };
         
         return matrix;
@@ -704,12 +707,12 @@ namespace EmMaths
     {
         Quaternion result;
         
-        const float cr = cos(roll * 0.5);
-        const float sr = sin(roll * 0.5);
-        const float cp = cos(pitch * 0.5);
-        const float sp = sin(pitch * 0.5);
-        const float cy = cos(yaw * 0.5);
-        const float sy = sin(yaw * 0.5);
+        const float cr = cosf(roll * 0.5f);
+        const float sr = sinf(roll * 0.5f);
+        const float cp = cosf(pitch * 0.5f);
+        const float sp = sinf(pitch * 0.5f);
+        const float cy = cosf(yaw * 0.5f);
+        const float sy = sinf(yaw * 0.5f);
 
         result.a = cr * cp * cy + sr * sp * sy;
         result.b = sr * cp * cy - cr * sp * sy;
@@ -718,13 +721,40 @@ namespace EmMaths
 
         return result;
     }
-
+    
     Quaternion Quaternion::Euler(const Float3& EulerAngles)
     {
         return Euler(EulerAngles.x, EulerAngles.y, EulerAngles.z);
     }
 
-    #pragma region Operators
+    Quaternion Quaternion::AngleAxis(const Float3& axis, const float& angle)
+    {
+        Quaternion result;
+
+        float sinTetha = sin(angle/2);
+        
+        result.a = cosf(angle/2);
+        result.b = sinTetha * axis.x;
+        result.c = sinTetha * axis.y;
+        result.d = sinTetha * axis.z;
+
+        return result;
+    }
+    
+    float Quaternion::DotProduct(const Quaternion& first, const Quaternion& second)
+    {
+        return  first.a * second.a + first.b * second.b + first.c * second.c + first.d * second.d;
+    }
+
+    Quaternion Quaternion::SLerp(const Quaternion& first, const Quaternion& second, const float& t)
+    {
+        const float alpha = acosf(DotProduct(first, second));
+        const float sinAlpha = sinf(alpha);
+
+        return first * (sinf((1 - t) * alpha) / sinAlpha) + second * (sinf(t * alpha) / sinAlpha);
+    }
+
+    #pragma region Operatorss
     Quaternion Quaternion::operator*(const Quaternion& other) const
     {
         return Hamilton(*this, other);
@@ -733,6 +763,11 @@ namespace EmMaths
     Quaternion Quaternion::operator+(const Quaternion& other) const
     {
         return {this->a + other.a, this->b + other.b, this->c + other.c, this->d + other.d};
+    }
+
+    Quaternion Quaternion::operator*(const float& other) const
+    {
+        return {a + other, b + other, c + other, d + other};
     }
     #pragma endregion
 
