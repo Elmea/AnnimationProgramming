@@ -28,7 +28,7 @@ public:
 
 	EmMaths::Mat4 GetTransformMatrix()
 	{
-		EmMaths::Mat4::CreateTransformMatrix(position, rotation, scale);
+		return EmMaths::Mat4::CreateTransformMatrix(position, rotation, scale);
 	}
 };
 
