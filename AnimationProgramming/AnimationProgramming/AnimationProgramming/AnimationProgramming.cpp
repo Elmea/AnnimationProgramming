@@ -1,6 +1,8 @@
 // AnimationProgramming.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
+#include <vector>
+#include <iostream>
 
 #include "Engine.h"
 #include "Macros.h"
@@ -20,24 +22,9 @@ class CSimulation : public ISimulation
 {
 	AnimSkeleton skeleton;
 
-	virtual void Init() override
-	{
-		skeleton.InitSkeleton();
-
-		//Float3 bonePos;
-		//Quaternion boneQuat;
-
-		//size_t keyCount = GetAnimKeyCount("ThirdPersonWalk.anim");
-		//GetAnimLocalBoneTransform("ThirdPersonWalk.anim", spineParent, keyCount / 2, bonePos, boneQuat);
-		
-		//printf("Spine parent bone : %s\n", spineParentName);
-		//printf("Anim key count : %ld\n", keyCount);
-		//printf("Anim key : pos(%.2f,%.2f,%.2f) rotation quat(%.10f,%.10f,%.10f,%.10f)\n", bonePos.x, bonePos.y, bonePos.z, boneQuat.d, boneQuat.a, boneQuat.b, boneQuat.c);
-	}
-
 	Quaternion a {Quaternion::AngleAxis({0, 1, 0}, MY_PI/2)};
 	Quaternion b {Quaternion::AngleAxis({0, 1, 0}, 0)};
-	Quaternion c {Quaternion::AngleAxis({0.4f, 0.72f, 0.15f}, MY_PI/2).GetNormalized()};
+	Quaternion c {Quaternion::AngleAxis({0.4f, 0.72f, 0.15f}, 3*MY_PI/4).GetNormalized()};
 	//Quaternion c {Quaternion::AngleAxis({0, 0, 0.5}, MY_PI/2)};
 	
 	Float3 testRoot {- 100, 0, 0};
@@ -45,12 +32,22 @@ class CSimulation : public ISimulation
 	Float3 NTestRoot {- 100, 50, 0};
 	Float3 CTestRoot {- 250, 25, 0};
 
-	bool timerGoesUp;
-	float SLerptimer;
-	const float timerLimit = 5.f;
-
-	void DrawLerpTest(float frameTime)
+	Mat4 SkinningPos[64];
+	
+	virtual void Init() override
 	{
+		skeleton.InitSkeleton();
+		
+		for (int i = 0; i < 64; i++)
+			SkinningPos[i] = Mat4::getIndentityMatrix();
+	}
+
+	void DrawLerpTest(const float& frameTime)
+	{
+		static bool timerGoesUp;
+		static float SLerptimer;
+		static const float timerLimit = 5.f;
+
 		DrawLine(testRoot, testRoot + (testVec * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
 		DrawLine(testRoot, testRoot + (testVec * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
 		Quaternion curr = Quaternion::SLerp(a, b, SLerptimer/timerLimit);
@@ -86,6 +83,8 @@ class CSimulation : public ISimulation
 	
 	virtual void Update(float frameTime) override
 	{
+		SetSkinningPose(SkinningPos[0].AsPtr(), 64);
+
 		CSimulation::EngineDrawGizmo();
 		skeleton.DrawSkeletonInEngine();
 		DrawLerpTest(frameTime);

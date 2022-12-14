@@ -164,6 +164,8 @@ namespace EmMaths
         Mat4 operator*(const float& mult);
         Mat4 operator*(const int& mult);
 
+        const float* AsPtr() const;
+        
         Mat4 getTransposedMatrix();
 
         float getDeterminent();

@@ -428,6 +428,11 @@ namespace EmMaths
     }
 
     #pragma endregion
+
+    const float* Mat4::AsPtr() const
+    {
+        return &mat[0][0];
+    }
     
     Mat4 Mat4::getRotationX(const float& angle)
     {

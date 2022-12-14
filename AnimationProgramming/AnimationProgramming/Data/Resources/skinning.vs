@@ -22,21 +22,23 @@ uniform mat4 modelViewMatrix;
 
 uniform SkinningMatrices
 {
-	uniform mat4 mat[64];
+	uniform mat4 palette[64];
 } skin;
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Vertex Shader
 ////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
-	// Calculate the position of the vertex against the world, view, and projection matrices.
-	vec4 pos = vec4(inputPosition, 1.0f);
-
-	gl_Position = sm.projectionMatrix * (modelViewMatrix * vec4(pos.xyz, 1.0f));
-	outNormal = mat3(modelViewMatrix) * normal;
-
-	outNormal = normalize(outNormal);
+    vec4 localPos = vec4(inputPosition, 1.0f);
+    vec3 localNormal = normal;
+    for (int i = 0; i < 4; i++)
+    {
+        localPos += skin.palette[int(boneIndices[i])] * vec4(inputPosition, 1.0f) * boneWeights[i];
+        
+        localNormal += mat3(skin.palette[int(boneIndices[i])]) * normal; 
+    }
+    
+    outNormal = mat3(modelViewMatrix) * localNormal; 
+	gl_Position = sm.projectionMatrix * (modelViewMatrix * vec4(localPos.xyz, 1.0f));
 }
