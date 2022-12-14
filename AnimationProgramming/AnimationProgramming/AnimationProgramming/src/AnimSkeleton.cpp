@@ -56,8 +56,12 @@ void AnimSkeleton::DrawAnimPose(const AnimPose& pose)
 	//TODO : Imgui parameters
 	EmMaths::Float3 drawOffset = {-200,0,0};
 	static const EmMaths::Float3 drawColor = { 0,0,0 };
-	
-	for (int i = 0; i < pose.boneCount; i++)
+
+	//
+
+	constexpr int boneCountOffset = 2;  //Start at 2 to not draw pelvis-root line
+
+	for (int i = boneCountOffset; i < pose.boneCount; i++)
 	{
 		int parentIdex = this->skeletonBones[i].parentIndex;
 
@@ -76,17 +80,39 @@ void AnimSkeleton::DrawAnimPose(const AnimPose& pose)
 		DrawLine(bonePosition, parentBonePosition, drawColor);
 	}
 }
-
-AnimPose AnimSkeleton::ComputeAnimatedPose()
+	
+AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime)
 {
 	AnimPose finalPose;
 	finalPose.Init(this->boneCount);
 
-	//TODO : Lerp between two keyframes
+	constexpr int animClipIdx = 1;
+
+	static const float keyFrameStep = this->animationsClips.at(animClipIdx).animDuration / this->animationsClips.at(animClipIdx).sampleRate;
+	static const int keyFrameCount = this->animationsClips.at(animClipIdx).keyFrameCount;
+
+	static float animTimer = 0;
+	static int keyframeIdx = 0;
+
+	animTimer += deltaTime;
+
+	if (animTimer >= keyFrameStep)
+	{
+		animTimer = 0;
+		keyframeIdx++;
+
+		if (keyframeIdx >= keyFrameCount)
+		{
+			keyframeIdx = 0;
+		}
+	}
+
+	//TODO : Keyframe by keyframe
+
 	for (int i = 0; i < this->boneCount; i++)
 	{
 		EmMaths::Mat4 bindMatrice = this->bindPose.boneTransforms.at(i).GetTransformMatrix();
-		EmMaths::Mat4 keyFrameMat = GetKeyFrame(this->animationsClips[0], 11).boneTransforms.at(i).GetTransformMatrix();
+		EmMaths::Mat4 keyFrameMat = GetKeyFrame(this->animationsClips[animClipIdx], keyframeIdx).boneTransforms.at(i).GetTransformMatrix();
 
 		EmMaths::Mat4 boneWorldPos = bindMatrice * keyFrameMat;
 

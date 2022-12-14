@@ -23,11 +23,11 @@ public:
 	void DrawSkeletonBindPose();
 	void DrawAnimPose(const AnimPose& pose);
 
-	AnimPose ComputeAnimatedPose();
+	AnimPose ComputeAnimatedPose(const float& deltaTime);
 
 private:
 	void InitBones();
 	void InitAnimClips();
 
-	KeyFrame GetKeyFrame(const AnimClip& clip, const int &keyFrameIdx); //Legacy
+	KeyFrame GetKeyFrame(const AnimClip& clip, const int &keyFrameIdx);		//Legacy
 };

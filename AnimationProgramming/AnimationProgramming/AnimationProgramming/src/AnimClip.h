@@ -13,6 +13,8 @@ public :
 	float animDuration = 0.0f;	//In seconds
 	int sampleRate = 0;			//The magic number !
 
+	int keyFrameCount = 0;
+
 	const char* animName;
 
 public :
