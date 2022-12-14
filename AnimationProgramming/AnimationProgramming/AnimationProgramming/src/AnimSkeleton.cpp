@@ -88,7 +88,7 @@ AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime)
 
 	constexpr int animClipIdx = 1;
 
-	static const float keyFrameStep = this->animationsClips.at(animClipIdx).animDuration / this->animationsClips.at(animClipIdx).sampleRate;
+	static const float keyFrameStep = this->animationsClips.at(animClipIdx).animDuration / this->animationsClips.at(animClipIdx).keyFrameCount;
 	static const int keyFrameCount = this->animationsClips.at(animClipIdx).keyFrameCount;
 
 	static float animTimer = 0;
