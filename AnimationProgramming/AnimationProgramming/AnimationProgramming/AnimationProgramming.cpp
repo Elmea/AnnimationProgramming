@@ -40,37 +40,50 @@ class CSimulation : public ISimulation
 
 	Float3 testRoot {- 100, 0, 0};
 	Float4 testFinal {- 100, 0, 0};
+	Float3 NTestRoot {- 100, 50, 0};
+
 
 	bool timerGoesUp;
-	float timer;
-	
-	virtual void Update(float frameTime) override
-	{
-		CSimulation::EngineDrawGizmo();
-		skeleton.DrawSkeletonInEngine();
+	float SLerptimer;
 
+	void DrawLerpTest(float frameTime)
+	{
 		DrawLine(testRoot, testRoot + (testFinal * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
 		DrawLine(testRoot, testRoot + (testFinal * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
 
-		Quaternion curr = Quaternion::SLerp(a, b, timer/5.f);
+		DrawLine(NTestRoot, NTestRoot + (testFinal * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(NTestRoot, NTestRoot + (testFinal * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+
+		Quaternion curr = Quaternion::SLerp(a, b, SLerptimer/5.f);
 		DrawLine(testRoot, testRoot + (testFinal * curr.GetRotationMatrix()).getXYZF3(), Float3{0.75, 0, 1});
 
+		curr = Quaternion::SLerp(a, b, SLerptimer/5.f);
+		DrawLine(NTestRoot, NTestRoot + (testFinal * curr.GetRotationMatrix()).getXYZF3(), Float3{1.f, 0.6f, 0.1f});
+
+		
 		if (timerGoesUp)
 		{
-			timer += frameTime;
-			if (timer >= 5)
+			SLerptimer += frameTime;
+			if (SLerptimer >= 5)
 			{
 				timerGoesUp = false;
 			}
 		}
 		else
 		{
-			timer -= frameTime;
-			if (timer <= 0)
+			SLerptimer -= frameTime;
+			if (SLerptimer <= 0)
 			{
 				timerGoesUp = true;
 			}
 		}
+	}
+	
+	virtual void Update(float frameTime) override
+	{
+		CSimulation::EngineDrawGizmo();
+		skeleton.DrawSkeletonInEngine();
+		DrawLerpTest(frameTime);
 	}
 
 	static void EngineDrawGizmo()

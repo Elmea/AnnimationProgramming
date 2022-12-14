@@ -754,6 +754,12 @@ namespace EmMaths
 
         return (first * (sinf((1 - t) * alpha) / sinAlpha) + second * (sinf(t * alpha) / sinAlpha)).GetNormalized();
     }
+
+    Quaternion Quaternion::NLerp(const Quaternion& first, const Quaternion& second, float t)
+    {
+        return (first * (1 - t) + second * t).GetNormalized();
+    }
+
     #pragma endregion
 
     #pragma region Operatorss
