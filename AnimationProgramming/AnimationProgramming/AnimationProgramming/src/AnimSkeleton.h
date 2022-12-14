@@ -17,7 +17,12 @@ public:
 
 public:
 	void InitSkeleton();
+
 	void DrawSkeletonInEngine();
 
 	EmMaths::Mat4 GetBoneWorldPosRecursif(const int& boneIndex);
+
+private:
+	void InitBones();
+	void InitAnimClips();
 };
