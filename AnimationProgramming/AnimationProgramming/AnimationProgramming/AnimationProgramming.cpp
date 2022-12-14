@@ -31,15 +31,10 @@ class CSimulation : public ISimulation
 	Float4 testVec {- 100, 0, 0};
 	Float3 NTestRoot {- 100, 50, 0};
 	Float3 CTestRoot {- 250, 25, 0};
-
-	Mat4 SkinningPos[64];
 	
 	virtual void Init() override
 	{
 		skeleton.InitSkeleton();
-		
-		for (int i = 0; i < 64; i++)
-			SkinningPos[i] = Mat4::getIndentityMatrix();
 	}
 
 	void DrawLerpTest(const float& frameTime)
@@ -80,18 +75,26 @@ class CSimulation : public ISimulation
 			}
 		}
 	}
+
+	std::vector<Mat4> bonesWorldPos;
 	
 	virtual void Update(float frameTime) override
 	{
-		SetSkinningPose(SkinningPos[0].AsPtr(), 64);
-
 		CSimulation::EngineDrawGizmo();
 
 		//skeleton.DrawSkeletonBindPose();
 		//DrawLerpTest(frameTime);
 
 		AnimPose skeletonPose = skeleton.ComputeAnimatedPose(frameTime);
-		SetSkinningPose(skeletonPose.bonesTransform[0].AsPtr(), 64);
+
+		//TODO : Clean this for and make it in a proper way
+		bonesWorldPos.clear();
+		for (int i = 0; i < skeleton.boneCount; i++)
+		{
+			bonesWorldPos.push_back(skeletonPose.GetBoneWorldPosition(&skeleton, i) * skeleton.bindPose.GetBoneWorldPosRecursif(&skeleton, i).getInverseMatrix());
+		}
+		
+		SetSkinningPose(bonesWorldPos[0].AsPtr(), skeleton.boneCount);
 		skeleton.DrawAnimPose(skeletonPose);
 	}
 
