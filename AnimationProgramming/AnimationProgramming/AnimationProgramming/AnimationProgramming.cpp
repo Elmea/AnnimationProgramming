@@ -86,8 +86,12 @@ class CSimulation : public ISimulation
 		SetSkinningPose(SkinningPos[0].AsPtr(), 64);
 
 		CSimulation::EngineDrawGizmo();
-		skeleton.DrawSkeletonInEngine();
-		DrawLerpTest(frameTime);
+
+		//skeleton.DrawSkeletonBindPose();
+		//DrawLerpTest(frameTime);
+
+		AnimPose skeletonPose = skeleton.ComputeAnimatedPose();
+		skeleton.DrawAnimPose(skeletonPose);
 	}
 
 	static void EngineDrawGizmo()

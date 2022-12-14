@@ -1,17 +1,18 @@
 #pragma once
 
-#include "Transform.h"
+#include "../MathsLib/EmMaths.hpp"
 
 #include <vector>
 
 class AnimPose
 {
-public :
-	std::vector<Transform> boneTransforms;
-	int keyFrameIndex = 0;
+public:
+	std::vector<EmMaths::Mat4> bonesWorldPositions;
+
 	int boneCount = 0;
 
 public :
-	void Init(const char* animName, const int& boneCount, const int& keyFrameIdx);
-};
+	void Init(const int& boneCount);
 
+	EmMaths::Mat4 GetBoneWorldPosition(const class AnimSkeleton*skeleton, const int& boneIdx)const;
+};

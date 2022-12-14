@@ -162,6 +162,8 @@
     <ClInclude Include="MathsLib\EmMaths.hpp" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="src\AnimClip.h" />
+    <ClInclude Include="src\AnimPose.h" />
+    <ClInclude Include="src\KeyFrame.h" />
     <ClInclude Include="src\AnimSkeleton.h" />
     <ClInclude Include="src\Transform.h" />
     <ClInclude Include="stdafx.h" />
@@ -174,6 +176,7 @@
     <ClCompile Include="MathsLib\EmMaths.cpp" />
     <ClCompile Include="src\AnimClip.cpp" />
     <ClCompile Include="src\AnimPose.cpp" />
+    <ClCompile Include="src\KeyFrame.cpp" />
     <ClCompile Include="src\AnimSkeleton.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="stdafx.cpp" />
