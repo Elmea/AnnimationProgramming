@@ -90,7 +90,7 @@ class CSimulation : public ISimulation
 		//skeleton.DrawSkeletonBindPose();
 		//DrawLerpTest(frameTime);
 
-		AnimPose skeletonPose = skeleton.ComputeAnimatedPose();
+		AnimPose skeletonPose = skeleton.ComputeAnimatedPose(frameTime);
 		skeleton.DrawAnimPose(skeletonPose);
 	}
 

@@ -22,6 +22,8 @@ void AnimClip::Init(AnimSkeleton* sekeleton, const char* animName, const int& sa
 {
 	size_t keyFramesCount = GetAnimKeyCount(animName);
 
+	this->keyFrameCount = keyFramesCount;
+
 	this->animName = animName;
 
 	this->keyFrames.clear();
