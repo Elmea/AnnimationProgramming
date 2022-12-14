@@ -116,7 +116,7 @@ AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime)
 
 		EmMaths::Mat4 boneWorldPos = bindMatrice * keyFrameMat;
 
-		finalPose.bonesWorldPositions.push_back(boneWorldPos);
+		finalPose.bonesTransform.push_back(boneWorldPos);
 	}
 
 	return finalPose;

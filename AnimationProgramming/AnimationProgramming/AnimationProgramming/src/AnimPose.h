@@ -7,7 +7,7 @@
 class AnimPose
 {
 public:
-	std::vector<EmMaths::Mat4> bonesWorldPositions;
+	std::vector<EmMaths::Mat4> bonesTransform;
 
 	int boneCount = 0;
 

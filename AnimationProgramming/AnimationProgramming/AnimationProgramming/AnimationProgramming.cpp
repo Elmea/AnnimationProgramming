@@ -91,6 +91,7 @@ class CSimulation : public ISimulation
 		//DrawLerpTest(frameTime);
 
 		AnimPose skeletonPose = skeleton.ComputeAnimatedPose(frameTime);
+		SetSkinningPose(skeletonPose.bonesTransform[0].AsPtr(), 64);
 		skeleton.DrawAnimPose(skeletonPose);
 	}
 
