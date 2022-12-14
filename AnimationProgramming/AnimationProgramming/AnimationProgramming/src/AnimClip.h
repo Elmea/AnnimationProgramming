@@ -1,16 +1,19 @@
 #pragma once
 
-#include "AnimPose.h"
+#include "KeyFrame.h"
+#include "../MathsLib/EmMaths.hpp"
 
 #include <vector>
 
 class AnimClip
 {
 public :
-	std::vector<AnimPose> keyFrames;
+	std::vector<KeyFrame> keyFrames;
 
 	float animDuration = 0.0f;	//In seconds
-	int sampleRate = 0;			//Keyframes per sec		//30 in this project
+	int sampleRate = 0;			//The magic number !
+
+	const char* animName;
 
 public :
 	AnimClip();

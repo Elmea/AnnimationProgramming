@@ -14,5 +14,5 @@ void GetSkeletonBoneLocalBindTransform(int boneIndex, Transform& transform);
 void GetAnimLocalBoneTransform(const char* animName, int boneIndex, int keyFrameIndex, EmMaths::Float3& transformPosition, EmMaths::Quaternion& transformQuat);
 void GetAnimLocalBoneTransform(const char* animName, int boneIndex, int keyFrameIndex, Transform& transform);
 
-void DrawLine(EmMaths::Float3& startPosition, EmMaths::Float3& endPosition, EmMaths::Float3& color);
-void DrawLine(Transform& startPosition, Transform& endPosition, EmMaths::Float3& color);
+void DrawLine(const EmMaths::Float3& startPosition, const EmMaths::Float3& endPosition, const EmMaths::Float3& color);
+void DrawLine(const Transform& startPosition, const Transform& endPosition, const EmMaths::Float3& color);

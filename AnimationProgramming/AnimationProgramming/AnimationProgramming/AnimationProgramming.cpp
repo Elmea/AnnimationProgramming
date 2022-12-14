@@ -23,16 +23,6 @@ class CSimulation : public ISimulation
 	virtual void Init() override
 	{
 		skeleton.InitSkeleton();
-
-		//Float3 bonePos;
-		//Quaternion boneQuat;
-
-		//size_t keyCount = GetAnimKeyCount("ThirdPersonWalk.anim");
-		//GetAnimLocalBoneTransform("ThirdPersonWalk.anim", spineParent, keyCount / 2, bonePos, boneQuat);
-		
-		//printf("Spine parent bone : %s\n", spineParentName);
-		//printf("Anim key count : %ld\n", keyCount);
-		//printf("Anim key : pos(%.2f,%.2f,%.2f) rotation quat(%.10f,%.10f,%.10f,%.10f)\n", bonePos.x, bonePos.y, bonePos.z, boneQuat.d, boneQuat.a, boneQuat.b, boneQuat.c);
 	}
 
 	Quaternion a {Quaternion::AngleAxis({0, 1, 0}, MY_PI/2)};
@@ -87,8 +77,12 @@ class CSimulation : public ISimulation
 	virtual void Update(float frameTime) override
 	{
 		CSimulation::EngineDrawGizmo();
-		skeleton.DrawSkeletonInEngine();
-		DrawLerpTest(frameTime);
+
+		//skeleton.DrawSkeletonBindPose();
+		//DrawLerpTest(frameTime);
+
+		AnimPose skeletonPose = skeleton.ComputeAnimatedPose();
+		skeleton.DrawAnimPose(skeletonPose);
 	}
 
 	static void EngineDrawGizmo()

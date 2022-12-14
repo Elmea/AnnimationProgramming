@@ -1,25 +1,25 @@
 #include "AnimPose.h"
 
-#include "Transform.h"
+#include "AnimSkeleton.h"
+#include "../AnimBone.h"
 
-#include "../Macros.h"
-
-void AnimPose::Init(const char* animName, const int& boneCount, const int& keyFrameIdx)
+void AnimPose::Init(const int& boneCount)
 {
+	this->bonesWorldPositions.clear();
+	this->bonesWorldPositions.reserve(boneCount);
+
 	this->boneCount = boneCount;
-	this->keyFrameIndex = keyFrameIdx;
+}
 
-	//In case there was a previous use of this object
-	this->boneTransforms.empty();
-	this->boneTransforms.reserve(boneCount);
-
-	for (int i = 0; i < boneCount; i++)
+EmMaths::Mat4 AnimPose::GetBoneWorldPosition(const AnimSkeleton* skeleton , const int& boneIdx) const
+{
+	if (boneIdx <= 0)		//Root bone or error
 	{
-		Transform boneTransform;
-		GetAnimLocalBoneTransform(animName, i, keyFrameIdx, boneTransform);
-
-		this->boneTransforms.push_back(boneTransform);
+		return this->bonesWorldPositions[0];
 	}
-
-	this->boneTransforms.shrink_to_fit();
+	else
+	{
+		return GetBoneWorldPosition(skeleton, skeleton->skeletonBones.at(boneIdx).parentIndex) * this->bonesWorldPositions[boneIdx];
+	}
+	return EmMaths::Mat4();
 }

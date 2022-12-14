@@ -1,8 +1,8 @@
 #include "AnimClip.h"
 
-#include "../Engine.h"
+#include "../Macros.h"
 
-#include "AnimPose.h"
+#include "KeyFrame.h"
 #include "AnimSkeleton.h"
 
 AnimClip::AnimClip()
@@ -22,6 +22,8 @@ void AnimClip::Init(AnimSkeleton* sekeleton, const char* animName, const int& sa
 {
 	size_t keyFramesCount = GetAnimKeyCount(animName);
 
+	this->animName = animName;
+
 	this->keyFrames.clear();
 	this->keyFrames.reserve(keyFramesCount);
 
@@ -30,7 +32,7 @@ void AnimClip::Init(AnimSkeleton* sekeleton, const char* animName, const int& sa
 	
 	for (int i = 0; i < keyFramesCount; i++)
 	{
-		AnimPose keyframe;
+		KeyFrame keyframe;
 		keyframe.Init(animName, sekeleton->boneCount, i);
 		this->keyFrames.push_back(keyframe);	//should not cause a lot of copy thanks to reserve
 	}

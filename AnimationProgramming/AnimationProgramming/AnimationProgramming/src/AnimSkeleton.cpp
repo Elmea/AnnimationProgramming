@@ -1,10 +1,13 @@
 #include "AnimSkeleton.h"
 
 #include "../Macros.h"
-#include "../Engine.h"
 #include "../AnimBone.h"
 
 #include "../MathsLib/EmMaths.hpp"
+
+#include "KeyFrame.h"
+#include "AnimPose.h"
+#include "AnimClip.h"
 
 #include <iostream>
 
@@ -14,7 +17,7 @@ void AnimSkeleton::InitSkeleton()
 	this->InitAnimClips();
 }
 
-void AnimSkeleton::DrawSkeletonInEngine()
+void AnimSkeleton::DrawSkeletonBindPose()
 {
 	const EmMaths::Float3 drawOffset = { 200,0,0 }; //TODO : Imgui parameters
 	EmMaths::Float3 drawColor = { 1,0,1 };
@@ -27,13 +30,13 @@ void AnimSkeleton::DrawSkeletonInEngine()
 		}
 
 		EmMaths::Float3 bonePos;
-		EmMaths::Mat4 boneMat = GetBoneWorldPosRecursif(bone.index);
+		EmMaths::Mat4 boneMat = bindPose.GetBoneWorldPosRecursif(this, bone.index);
 
 		bonePos.x = boneMat.mat[0][3];
 		bonePos.y = boneMat.mat[1][3];
 		bonePos.z = boneMat.mat[2][3];
 
-		EmMaths::Mat4 parentBoneMat = GetBoneWorldPosRecursif(bone.parentIndex);
+		EmMaths::Mat4 parentBoneMat = bindPose.GetBoneWorldPosRecursif(this, bone.parentIndex);
 
 		EmMaths::Float3 parentBonePos;
 
@@ -48,27 +51,54 @@ void AnimSkeleton::DrawSkeletonInEngine()
 	}
 }
 
-EmMaths::Mat4 AnimSkeleton::GetBoneWorldPosRecursif(const int& boneIndex)
+void AnimSkeleton::DrawAnimPose(const AnimPose& pose)
 {
-	Transform boneLocalTransform;
-
-	if (boneIndex <= 0) //Root bone or error
+	//TODO : Imgui parameters
+	EmMaths::Float3 drawOffset = {-200,0,0};
+	static const EmMaths::Float3 drawColor = { 0,0,0 };
+	
+	for (int i = 0; i < pose.boneCount; i++)
 	{
-		GetSkeletonBoneLocalBindTransform(0, boneLocalTransform);
-		return boneLocalTransform.GetTransformMatrix();
-	}
-	else
-	{
-		AnimBone bone = this->skeletonBones.at(boneIndex);
-		GetSkeletonBoneLocalBindTransform(boneIndex, boneLocalTransform);
+		int parentIdex = this->skeletonBones[i].parentIndex;
 
-		return GetBoneWorldPosRecursif(bone.parentIndex) * boneLocalTransform.GetTransformMatrix();
+		if (parentIdex < 0)
+			continue;
+		
+		EmMaths::Mat4 boneMat = pose.GetBoneWorldPosition(this, i);
+		EmMaths::Mat4 parentBoneMat = pose.GetBoneWorldPosition(this, parentIdex);
+
+		EmMaths::Float3 bonePosition = { boneMat.mat[0][3], boneMat.mat[1][3], boneMat.mat[2][3] };
+		EmMaths::Float3 parentBonePosition = { parentBoneMat.mat[0][3], parentBoneMat.mat[1][3], parentBoneMat.mat[2][3] };
+
+		bonePosition += drawOffset;
+		parentBonePosition += drawOffset;
+
+		DrawLine(bonePosition, parentBonePosition, drawColor);
 	}
+}
+
+AnimPose AnimSkeleton::ComputeAnimatedPose()
+{
+	AnimPose finalPose;
+	finalPose.Init(this->boneCount);
+
+	//TODO : Lerp between two keyframes
+	for (int i = 0; i < this->boneCount; i++)
+	{
+		EmMaths::Mat4 bindMatrice = this->bindPose.boneTransforms.at(i).GetTransformMatrix();
+		EmMaths::Mat4 keyFrameMat = GetKeyFrame(this->animationsClips[0], 11).boneTransforms.at(i).GetTransformMatrix();
+
+		EmMaths::Mat4 boneWorldPos = bindMatrice * keyFrameMat;
+
+		finalPose.bonesWorldPositions.push_back(boneWorldPos);
+	}
+
+	return finalPose;
 }
 
 void AnimSkeleton::InitBones()
 {
-	constexpr int bonesEnTrop = 4;
+	constexpr int bonesEnTrop = 7;
 
 	this->boneCount = GetSkeletonBoneCount();
 	this->boneCount -= bonesEnTrop;
@@ -91,11 +121,23 @@ void AnimSkeleton::InitBones()
 
 void AnimSkeleton::InitAnimClips()
 {
-	constexpr int animSampleRate = 30;	//Magic number :'(
+	this->animationsClips.clear();
+	this->animationsClips.reserve(2);
+	
+	//Init bind pos
+	bindPose = KeyFrame::GetBindPos(this->boneCount);
+
+	//Init walk/run
+	constexpr int animSampleRate = 30;	//! Magic number !
 
 	AnimClip walkAnim(this, "ThirdPersonWalk.anim", animSampleRate);
 	AnimClip runAnim(this, "ThirdPersonRun.anim", animSampleRate);
 
 	this->animationsClips.push_back(walkAnim);
 	this->animationsClips.push_back(runAnim);
+}
+
+KeyFrame AnimSkeleton::GetKeyFrame(const AnimClip& clip, const int& keyFrameIdx)
+{
+	return clip.keyFrames.at(keyFrameIdx);
 }

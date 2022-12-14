@@ -10,6 +10,6 @@ void GetAnimLocalBoneTransform(const char* animName, int boneIndex, int keyFrame
 
 void GetAnimLocalBoneTransform(const char* animName, int boneIndex, int keyFrameIndex, Transform& transform) { GetAnimLocalBoneTransform(animName, boneIndex, keyFrameIndex, transform.position, transform.rotation); };
 
-void DrawLine(EmMaths::Float3& startPosition, EmMaths::Float3& endPosition, EmMaths::Float3& color) { DrawLine(startPosition.x, startPosition.y, startPosition.z, endPosition.x, endPosition.y, endPosition.z, color.x, color.y, color.z); };
+void DrawLine(const EmMaths::Float3& startPosition, const EmMaths::Float3& endPosition,const EmMaths::Float3& color) { DrawLine(startPosition.x, startPosition.y, startPosition.z, endPosition.x, endPosition.y, endPosition.z, color.x, color.y, color.z); };
 
-void DrawLine(Transform& startPosition, Transform& endPosition, EmMaths::Float3& color) { DrawLine(startPosition.position, endPosition.position, color); };
+void DrawLine(const Transform& startPosition, const Transform& endPosition, const EmMaths::Float3& color) { DrawLine(startPosition.position, endPosition.position, color); };
