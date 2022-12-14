@@ -212,15 +212,17 @@ namespace EmMaths
         //Return a Quaternion from corresponding axis and radian angle
         static Quaternion AngleAxis(const Float3& axis, const float& angle);
         
-        static Quaternion SLerp(const Quaternion& first, const Quaternion& second, const float& t);
-        static Quaternion NLerp(const Quaternion& first, const Quaternion& second, const float& t);
+        static Quaternion SLerp(const Quaternion& first, const Quaternion& second, float t);
+        static Quaternion NLerp(const Quaternion& first, const Quaternion& second, float t);
 
         static float DotProduct(const Quaternion& first, const Quaternion& second);
         
         Quaternion operator*(const Quaternion& other) const;
         Quaternion operator*(const float& other) const;
         Quaternion operator+(const Quaternion& other) const;
-    };
+        Quaternion operator+(const float& other) const;
+    }; 
+
 
 #pragma endregion
 

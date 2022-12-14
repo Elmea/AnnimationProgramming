@@ -35,10 +35,42 @@ class CSimulation : public ISimulation
 		//printf("Anim key : pos(%.2f,%.2f,%.2f) rotation quat(%.10f,%.10f,%.10f,%.10f)\n", bonePos.x, bonePos.y, bonePos.z, boneQuat.d, boneQuat.a, boneQuat.b, boneQuat.c);
 	}
 
+	Quaternion a {Quaternion::AngleAxis({0, 1, 0}, MY_PI/2)};
+	Quaternion b {Quaternion::AngleAxis({0, 1, 0}, 0)};
+
+	Float3 testRoot {- 100, 0, 0};
+	Float4 testFinal {- 100, 0, 0};
+
+	bool timerGoesUp;
+	float timer;
+	
 	virtual void Update(float frameTime) override
 	{
 		CSimulation::EngineDrawGizmo();
 		skeleton.DrawSkeletonInEngine();
+
+		DrawLine(testRoot, testRoot + (testFinal * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(testRoot, testRoot + (testFinal * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+
+		Quaternion curr = Quaternion::SLerp(a, b, timer/5.f);
+		DrawLine(testRoot, testRoot + (testFinal * curr.GetRotationMatrix()).getXYZF3(), Float3{0.75, 0, 1});
+
+		if (timerGoesUp)
+		{
+			timer += frameTime;
+			if (timer >= 5)
+			{
+				timerGoesUp = false;
+			}
+		}
+		else
+		{
+			timer -= frameTime;
+			if (timer <= 0)
+			{
+				timerGoesUp = true;
+			}
+		}
 	}
 
 	static void EngineDrawGizmo()
