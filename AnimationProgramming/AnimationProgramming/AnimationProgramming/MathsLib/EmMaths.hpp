@@ -220,7 +220,6 @@ namespace EmMaths
         Quaternion operator*(const Quaternion& other) const;
         Quaternion operator*(const float& other) const;
         Quaternion operator+(const Quaternion& other) const;
-        Quaternion operator+(const float& other) const;
     }; 
 
 

@@ -749,9 +749,24 @@ namespace EmMaths
 
     Quaternion Quaternion::SLerp(const Quaternion& first, const Quaternion& second, float t)
     {
-        const float alpha = acosf(DotProduct(first, second));
+        float alpha = acosf(DotProduct(first, second));
         const float sinAlpha = sinf(alpha);
 
+    #if 0
+        const float sinInvTAlpha = sinf((1 - t) * alpha);
+        const float sinTAlpha = sinf(t * alpha);
+
+        Quaternion result;
+        result.a = sinInvTAlpha / sinAlpha * first.a + sinTAlpha / sinAlpha * second.a;
+        result.b = sinInvTAlpha / sinAlpha * first.b + sinTAlpha / sinAlpha * second.b;
+        result.c = sinInvTAlpha / sinAlpha * first.c + sinTAlpha / sinAlpha * second.c;
+        result.d = sinInvTAlpha / sinAlpha * first.d + sinTAlpha / sinAlpha * second.d;
+
+        result.Normalize();
+        
+        return result;
+    #endif
+        
         return (first * (sinf((1 - t) * alpha) / sinAlpha) + second * (sinf(t * alpha) / sinAlpha)).GetNormalized();
     }
 
@@ -759,10 +774,9 @@ namespace EmMaths
     {
         return (first * (1 - t) + second * t).GetNormalized();
     }
-
     #pragma endregion
 
-    #pragma region Operatorss
+    #pragma region Operators
     Quaternion Quaternion::operator*(const Quaternion& other) const
     {
         return Hamilton(*this, other);
@@ -776,11 +790,6 @@ namespace EmMaths
     Quaternion Quaternion::operator*(const float& other) const
     {
         return {a * other, b * other, c * other, d * other};
-    }
-
-    Quaternion Quaternion::operator+(const float& other) const
-    {
-        return {a + other, b + other, c + other, d + other};
     }
     #pragma endregion
 

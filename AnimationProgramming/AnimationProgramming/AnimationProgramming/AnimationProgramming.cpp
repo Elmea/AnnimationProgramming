@@ -37,34 +37,39 @@ class CSimulation : public ISimulation
 
 	Quaternion a {Quaternion::AngleAxis({0, 1, 0}, MY_PI/2)};
 	Quaternion b {Quaternion::AngleAxis({0, 1, 0}, 0)};
-
+	Quaternion c {Quaternion::AngleAxis({0.4f, 0.72f, 0.15f}, MY_PI/2).GetNormalized()};
+	//Quaternion c {Quaternion::AngleAxis({0, 0, 0.5}, MY_PI/2)};
+	
 	Float3 testRoot {- 100, 0, 0};
-	Float4 testFinal {- 100, 0, 0};
+	Float4 testVec {- 100, 0, 0};
 	Float3 NTestRoot {- 100, 50, 0};
-
+	Float3 CTestRoot {- 250, 25, 0};
 
 	bool timerGoesUp;
 	float SLerptimer;
+	const float timerLimit = 5.f;
 
 	void DrawLerpTest(float frameTime)
 	{
-		DrawLine(testRoot, testRoot + (testFinal * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
-		DrawLine(testRoot, testRoot + (testFinal * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(testRoot, testRoot + (testVec * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(testRoot, testRoot + (testVec * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		Quaternion curr = Quaternion::SLerp(a, b, SLerptimer/timerLimit);
+		DrawLine(testRoot, testRoot + (testVec * curr.GetRotationMatrix()).getXYZF3(), Float3{0.75, 0, 1});
 
-		DrawLine(NTestRoot, NTestRoot + (testFinal * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
-		DrawLine(NTestRoot, NTestRoot + (testFinal * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(NTestRoot, NTestRoot + (testVec * a.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(NTestRoot, NTestRoot + (testVec * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		curr = Quaternion::NLerp(a, b, SLerptimer/timerLimit);
+		DrawLine(NTestRoot, NTestRoot + (testVec * curr.GetRotationMatrix()).getXYZF3(), Float3{1.f, 0.6f, 0.1f});
 
-		Quaternion curr = Quaternion::SLerp(a, b, SLerptimer/5.f);
-		DrawLine(testRoot, testRoot + (testFinal * curr.GetRotationMatrix()).getXYZF3(), Float3{0.75, 0, 1});
-
-		curr = Quaternion::SLerp(a, b, SLerptimer/5.f);
-		DrawLine(NTestRoot, NTestRoot + (testFinal * curr.GetRotationMatrix()).getXYZF3(), Float3{1.f, 0.6f, 0.1f});
-
+		DrawLine(CTestRoot, CTestRoot + (testVec * b.GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		DrawLine(CTestRoot, CTestRoot + (testVec * c.GetNormalized().GetRotationMatrix()).getXYZF3(), Float3{0, 0, 0});
+		curr = Quaternion::SLerp(b, c, SLerptimer/timerLimit);
+		DrawLine(CTestRoot, CTestRoot + (testVec * curr.GetRotationMatrix()).getXYZF3(), Float3{0.2f, 0.6f, 0.2f});
 		
 		if (timerGoesUp)
 		{
 			SLerptimer += frameTime;
-			if (SLerptimer >= 5)
+			if (SLerptimer >= timerLimit)
 			{
 				timerGoesUp = false;
 			}
