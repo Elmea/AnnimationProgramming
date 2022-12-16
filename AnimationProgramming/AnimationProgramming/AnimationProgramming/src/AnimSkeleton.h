@@ -21,9 +21,9 @@ public:
 	void InitSkeleton();
 
 	void DrawSkeletonBindPose();
-	void DrawAnimPose(const AnimPose& pose);
+	void DrawAnimPose(const AnimPose& pose, const EmMaths::Float3& drawOffset);
 
-	AnimPose ComputeAnimatedPose(const float& deltaTime);
+	AnimPose ComputeAnimatedPose(const float& deltaTime, const int& clipIdx, const bool& smoothedAnim = false);
 
 private:
 	void InitBones();

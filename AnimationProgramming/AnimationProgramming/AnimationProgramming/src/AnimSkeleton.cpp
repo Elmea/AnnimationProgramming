@@ -51,12 +51,9 @@ void AnimSkeleton::DrawSkeletonBindPose()
 	}
 }
 
-void AnimSkeleton::DrawAnimPose(const AnimPose& pose)
+void AnimSkeleton::DrawAnimPose(const AnimPose& pose, const EmMaths::Float3 &drawOffset)
 {
-	//TODO : Imgui parameters
-	EmMaths::Float3 drawOffset = {-200,0,0};
 	static const EmMaths::Float3 drawColor = { 0,0,0 };
-
 	//
 
 	constexpr int boneCountOffset = 2;  //Start at 2 to not draw pelvis-root line
@@ -81,18 +78,16 @@ void AnimSkeleton::DrawAnimPose(const AnimPose& pose)
 	}
 }
 	
-AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime)
+AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime, const int& clipIdx, const bool& smoothedAnim)
 {
-	AnimPose finalPose;
-	finalPose.Init(this->boneCount);
+	AnimPose finalPose(this->boneCount);
 
-	constexpr int animClipIdx = 1;
-
-	static const float keyFrameStep = this->animationsClips.at(animClipIdx).animDuration / this->animationsClips.at(animClipIdx).keyFrameCount;
-	static const int keyFrameCount = this->animationsClips.at(animClipIdx).keyFrameCount;
+	static const float keyFrameStep = this->animationsClips.at(clipIdx).animDuration / this->animationsClips.at(clipIdx).keyFrameCount;
+	static const int keyFrameCount = this->animationsClips.at(clipIdx).keyFrameCount;
 
 	static float animTimer = 0;
 	static int keyframeIdx = 0;
+	static int nextkeyframe = 1;
 
 	animTimer += deltaTime;
 
@@ -100,21 +95,31 @@ AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime)
 	{
 		animTimer = 0;
 		keyframeIdx++;
+		nextkeyframe++;
 
 		if (keyframeIdx >= keyFrameCount)
 		{
 			keyframeIdx = 0;
 		}
+		
+		if(nextkeyframe >= keyFrameCount)
+		{
+			nextkeyframe = 0;
+		}
 	}
-
-	//TODO : Keyframe by keyframe
 
 	for (int i = 0; i < this->boneCount; i++)
 	{
 		EmMaths::Mat4 bindMatrice = this->bindPose.boneTransforms.at(i).GetTransformMatrix();
-		EmMaths::Mat4 keyFrameMat = GetKeyFrame(this->animationsClips[animClipIdx], keyframeIdx).boneTransforms.at(i).GetTransformMatrix();
 
-		EmMaths::Mat4 boneWorldPos = bindMatrice * keyFrameMat;
+		EmMaths::Mat4 animationMatrix;
+
+		if (smoothedAnim) //Lerp
+			animationMatrix = Transform::Lerp(GetKeyFrame(this->animationsClips[clipIdx], keyframeIdx).boneTransforms.at(i), GetKeyFrame(this->animationsClips[clipIdx], nextkeyframe).boneTransforms.at(i), animTimer/ keyFrameStep).GetTransformMatrix();
+		else
+			animationMatrix = GetKeyFrame(this->animationsClips[clipIdx], keyframeIdx).boneTransforms.at(i).GetTransformMatrix();
+
+		EmMaths::Mat4 boneWorldPos = bindMatrice * animationMatrix;
 
 		finalPose.bonesTransform.push_back(boneWorldPos);
 	}
