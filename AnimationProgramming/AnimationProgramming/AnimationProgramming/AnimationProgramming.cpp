@@ -85,9 +85,9 @@ class CSimulation : public ISimulation
 		skeleton.DrawSkeletonBindPose();
 		//DrawLerpTest(frameTime);
 
-		AnimPose skeletonPose = skeleton.ComputeAnimatedPose(frameTime);
+		AnimPose skeletonPose = skeleton.ComputeAnimatedPose(frameTime, 1, true);
 
-		skeleton.DrawAnimPose(skeletonPose);
+		skeleton.DrawAnimPose(skeletonPose, {-200,0,0});
 		
 		//TODO : Clean this and make it in a proper way
 		bonesWorldPos.clear();
@@ -99,19 +99,20 @@ class CSimulation : public ISimulation
 			bonesWorldPos.push_back((skeletonPose.GetBoneWorldPosition(&skeleton, i) * skeleton.bindPose.GetBoneWorldPosRecursif(&skeleton, i).getInverseMatrix()).getTransposedMatrix()); 
 		
 		SetSkinningPose(bonesWorldPos[0].AsPtr(), skeleton.boneCount);
+		skeleton.DrawAnimPose(skeletonPose, {-200,0,0});
 	}
 
 	static void EngineDrawGizmo()
 	{
-		Float3 zero;
+		static const Float3 zero;
 
-		Float3 red(1, 0, 0);
-		Float3 green(0, 1, 0);
-		Float3 blue(0, 0, 1);
+		static const Float3 red(1, 0, 0);
+		static const Float3 green(0, 1, 0);
+		static const Float3 blue(0, 0, 1);
 
-		Float3 xAxis(100, 0, 0);
-		Float3 yAxis(0, 100, 0);
-		Float3 zAxis(0, 0, 100);
+		static const Float3 xAxis(100, 0, 0);
+		static const Float3 yAxis(0, 100, 0);
+		static const Float3 zAxis(0, 0, 100);
 
 		// X axis
 		DrawLine(zero, xAxis, red);

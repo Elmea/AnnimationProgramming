@@ -80,6 +80,7 @@ void AnimSkeleton::DrawAnimPose(const AnimPose& pose, const EmMaths::Float3 &dra
 	
 AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime, const int& clipIdx, const bool& smoothedAnim)
 {
+	constexpr float animSpeed = 0.1f;
 	AnimPose finalPose(this->boneCount);
 
 	static const float keyFrameStep = this->animationsClips.at(clipIdx).animDuration / this->animationsClips.at(clipIdx).keyFrameCount;
@@ -89,7 +90,7 @@ AnimPose AnimSkeleton::ComputeAnimatedPose(const float &deltaTime, const int& cl
 	static int keyframeIdx = 0;
 	static int nextkeyframe = 1;
 
-	animTimer += deltaTime;
+	animTimer += deltaTime * animSpeed;
 
 	if (animTimer >= keyFrameStep)
 	{
