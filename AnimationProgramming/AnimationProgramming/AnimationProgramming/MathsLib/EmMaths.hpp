@@ -81,6 +81,7 @@ namespace EmMaths
 
 
         static Float3 getSphericalCoords(float r, float theta, float phi);
+        static Float3 Lerp(const Float3& a, const Float3& b, const float& time);
     };
 
     inline bool operator==(const EmMaths::Float3& f1, const EmMaths::Float3& f2)

@@ -109,6 +109,11 @@ namespace EmMaths
         };
     }
 
+    Float3 Float3::Lerp(const Float3& a, const Float3& b, const float& time)
+    {
+        return Float3(Misc::Lerp(time, a.x,b.x), Misc::Lerp(time, a.y, b.y), Misc::Lerp(time, a.z, b.z));
+    }
+
     #pragma region operators
     Float3 Float3::operator+(Float3& other)
     {
@@ -752,6 +757,7 @@ namespace EmMaths
         return  first.a * second.a + first.b * second.b + first.c * second.c + first.d * second.d;
     }
 
+    //TODO : fix quternion lerp
     Quaternion Quaternion::SLerp(const Quaternion& first, const Quaternion& second, float t)
     {
         float alpha = acosf(DotProduct(first, second));
