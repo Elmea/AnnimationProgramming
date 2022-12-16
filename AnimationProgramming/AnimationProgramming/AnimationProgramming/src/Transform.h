@@ -30,5 +30,7 @@ public:
 	{
 		return EmMaths::Mat4::CreateTransformMatrix(position, rotation, scale);
 	}
+
+	static Transform Lerp(const Transform& a, const Transform& b, const float &time);
 };
 
