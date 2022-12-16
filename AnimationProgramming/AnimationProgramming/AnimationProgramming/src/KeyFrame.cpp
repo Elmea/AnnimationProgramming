@@ -51,9 +51,9 @@ KeyFrame KeyFrame::GetBindPos(const int& boneCount)
 
 EmMaths::Mat4 KeyFrame::GetBoneWorldPosRecursif(const AnimSkeleton*skeleton, const int& boneIndex)
 {
-	if (boneIndex <= 0)		//Root bone or error
+	if (boneIndex < 0)		//Root bone or error
 	{
-		return this->boneTransforms[0].GetTransformMatrix();
+		return EmMaths::Mat4::getIndentityMatrix();
 	}
 	else
 	{

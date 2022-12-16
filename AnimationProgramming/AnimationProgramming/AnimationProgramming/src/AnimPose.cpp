@@ -13,13 +13,12 @@ void AnimPose::Init(const int& boneCount)
 
 EmMaths::Mat4 AnimPose::GetBoneWorldPosition(const AnimSkeleton* skeleton , const int& boneIdx) const
 {
-	if (boneIdx <= 0)		//Root bone or error
+	if (boneIdx < 0)		//Root bone or error
 	{
-		return this->bonesTransform[0];
+		return EmMaths::Mat4::getIndentityMatrix();
 	}
 	else
 	{
 		return GetBoneWorldPosition(skeleton, skeleton->skeletonBones.at(boneIdx).parentIndex) * this->bonesTransform[boneIdx];
 	}
-	return EmMaths::Mat4();
 }

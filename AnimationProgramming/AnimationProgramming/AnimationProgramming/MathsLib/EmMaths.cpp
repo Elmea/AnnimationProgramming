@@ -358,7 +358,7 @@ namespace EmMaths
         return result;
     }
 
-    Mat4 Mat4::operator*(const Mat4& other)
+    Mat4 Mat4::operator*(const Mat4& other) const
     {
         Mat4 res;
         for (int i = 0; i < 4; i++)

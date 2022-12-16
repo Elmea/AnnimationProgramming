@@ -30,7 +30,7 @@ uniform SkinningMatrices
 ////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
-    vec4 localPos = vec4(inputPosition, 1.0f);
+    vec4 localPos = vec4(0.f, 0.f, 0.f, 0.f);
     vec3 localNormal = normal;
     for (int i = 0; i < 4; i++)
     {

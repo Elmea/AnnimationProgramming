@@ -82,20 +82,23 @@ class CSimulation : public ISimulation
 	{
 		CSimulation::EngineDrawGizmo();
 
-		//skeleton.DrawSkeletonBindPose();
+		skeleton.DrawSkeletonBindPose();
 		//DrawLerpTest(frameTime);
 
 		AnimPose skeletonPose = skeleton.ComputeAnimatedPose(frameTime);
 
-		//TODO : Clean this for and make it in a proper way
+		skeleton.DrawAnimPose(skeletonPose);
+		
+		//TODO : Clean this and make it in a proper way
 		bonesWorldPos.clear();
+		bonesWorldPos.reserve(skeleton.boneCount);
+
+		skeleton.bindPose.boneTransforms[0].GetTransformMatrix();
+		
 		for (int i = 0; i < skeleton.boneCount; i++)
-		{
-			bonesWorldPos.push_back(skeletonPose.GetBoneWorldPosition(&skeleton, i) * skeleton.bindPose.GetBoneWorldPosRecursif(&skeleton, i).getInverseMatrix());
-		}
+			bonesWorldPos.push_back((skeletonPose.GetBoneWorldPosition(&skeleton, i) * skeleton.bindPose.GetBoneWorldPosRecursif(&skeleton, i).getInverseMatrix()).getTransposedMatrix()); 
 		
 		SetSkinningPose(bonesWorldPos[0].AsPtr(), skeleton.boneCount);
-		skeleton.DrawAnimPose(skeletonPose);
 	}
 
 	static void EngineDrawGizmo()

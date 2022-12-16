@@ -159,7 +159,7 @@ namespace EmMaths
         static Mat4 CreateTransformMatrix(const Float3& position, const Float3& rotationDEG, const Float3& scale);
         static Mat4 CreateTransformMatrix(const Float3& position, const Quaternion& rotation, const Float3& scale);
 
-        Mat4 operator*(const Mat4& other);
+        Mat4 operator*(const Mat4& other) const;
         Float4 operator*(const Float4& ft4);
         Mat4 operator*(const float& mult);
         Mat4 operator*(const int& mult);
