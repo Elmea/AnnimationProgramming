@@ -24,7 +24,7 @@ void AnimSkeleton::DrawSkeletonBindPose()
 
 	for (const AnimBone& bone : skeletonBones)
 	{
-		if (bone.parentIndex < 0)
+		if (bone.parentIndex < 0 || bone.index == 1) //Dont draw first line and all other invalid lines
 		{
 			continue;
 		}
