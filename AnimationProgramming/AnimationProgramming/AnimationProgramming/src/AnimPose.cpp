@@ -3,6 +3,15 @@
 #include "AnimSkeleton.h"
 #include "../AnimBone.h"
 
+AnimPose::AnimPose()
+{
+}
+
+AnimPose::AnimPose(const int& boneCount)
+{
+	this->Init(boneCount);
+}
+
 void AnimPose::Init(const int& boneCount)
 {
 	this->bonesTransform.clear();

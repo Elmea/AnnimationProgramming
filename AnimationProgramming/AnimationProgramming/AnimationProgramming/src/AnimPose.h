@@ -12,6 +12,8 @@ public:
 	int boneCount = 0;
 
 public :
+	AnimPose();
+	AnimPose(const int& boneCount);
 	void Init(const int& boneCount);
 
 	EmMaths::Mat4 GetBoneWorldPosition(const class AnimSkeleton*skeleton, const int& boneIdx)const;
