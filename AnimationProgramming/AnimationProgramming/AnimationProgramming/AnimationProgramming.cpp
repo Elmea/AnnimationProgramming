@@ -1,20 +1,18 @@
 // AnimationProgramming.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
-#include <vector>
-#include <iostream>
 
 #include "Engine.h"
 #include "Macros.h"
 #include "Simulation.h"
 
-#include "AnimBone.h"
-#include "src/Transform.h"
 #include "src/AnimSkeleton.h"
+#include "AnimBone.h"
 
 #include "MathsLib/EmMaths.hpp"
+#include "imgui/imgui.h"
 
-#include <iostream>
+#include <vector>
 
 using namespace EmMaths;
 
@@ -25,7 +23,6 @@ class CSimulation : public ISimulation
 	Quaternion a {Quaternion::AngleAxis({0, 1, 0}, MY_PI/2)};
 	Quaternion b {Quaternion::AngleAxis({0, 1, 0}, 0)};
 	Quaternion c {Quaternion::AngleAxis({0.4f, 0.72f, 0.15f}, 3*MY_PI/4).GetNormalized()};
-	//Quaternion c {Quaternion::AngleAxis({0, 0, 0.5}, MY_PI/2)};
 	
 	Float3 testRoot {- 100, 0, 0};
 	Float4 testVec {- 100, 0, 0};
@@ -34,6 +31,8 @@ class CSimulation : public ISimulation
 	
 	virtual void Init() override
 	{
+		ImGui::SetCurrentContext((ImGuiContext*)GetImGUIContext());
+
 		skeleton.InitSkeleton();
 	}
 
@@ -103,7 +102,9 @@ class CSimulation : public ISimulation
 	}
 
 	static void EngineDrawGizmo()
-	{
+	{	
+		//Static huh ?
+
 		static const Float3 zero;
 
 		static const Float3 red(1, 0, 0);

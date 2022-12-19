@@ -3,7 +3,7 @@
 #include "../Macros.h"
 #include "../AnimBone.h"
 
-#include "../MathsLib/EmMaths.hpp"
+#include "MathsLib/EmMaths.hpp"
 
 #include "KeyFrame.h"
 #include "AnimPose.h"

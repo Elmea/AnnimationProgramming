@@ -16,6 +16,9 @@
     <Filter Include="Maths">
       <UniqueIdentifier>{522ed1a0-59ff-48c0-b78c-921dc549f718}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGUI">
+      <UniqueIdentifier>{4c6c0567-3cd1-42ae-a027-6e71eae09fbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -35,9 +38,6 @@
     </ClInclude>
     <ClInclude Include="Header.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MathsLib\EmMaths.hpp">
-      <Filter>Maths</Filter>
     </ClInclude>
     <ClInclude Include="Macros.h">
       <Filter>Header Files</Filter>
@@ -60,6 +60,27 @@
     <ClInclude Include="src\AnimPose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Libs\MathsLib\EmMaths.hpp">
+      <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\imgui\imgui.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\imgui\imconfig.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\imgui\imgui_internal.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\imgui\imstb_textedit.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\imgui\imstb_rectpack.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\imgui\imstb_truetype.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -67,9 +88,6 @@
     </ClCompile>
     <ClCompile Include="AnimationProgramming.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MathsLib\EmMaths.cpp">
-      <Filter>Maths</Filter>
     </ClCompile>
     <ClCompile Include="AnimBone.cpp">
       <Filter>Source Files</Filter>
@@ -91,6 +109,18 @@
     </ClCompile>
     <ClCompile Include="src\AnimPose.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\MathsLib\EmMaths.cpp">
+      <Filter>Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\imgui\imgui.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\imgui\imgui_draw.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\imgui\imgui_widgets.cpp">
+      <Filter>ImGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

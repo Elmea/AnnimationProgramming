@@ -1,6 +1,6 @@
 #include "Transform.h"
 
-#include "../MathsLib/EmMaths.hpp"
+#include "MathsLib/EmMaths.hpp"
 
 Transform Transform::Lerp(const Transform& a, const Transform& b, const float& time)
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../MathsLib/EmMaths.hpp"
+#include "MathsLib/EmMaths.hpp"
 
 #include <vector>
 
