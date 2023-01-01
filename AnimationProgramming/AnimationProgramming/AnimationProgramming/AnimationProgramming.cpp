@@ -34,6 +34,7 @@ class CSimulation : public ISimulation
 		ImGui::SetCurrentContext((ImGuiContext*)GetImGUIContext());
 
 		skeleton.InitSkeleton();
+		bonesWorldPos.reserve(skeleton.boneCount);
 	}
 
 	void DrawLerpTest(const float& frameTime)
@@ -90,9 +91,6 @@ class CSimulation : public ISimulation
 		
 		//TODO : Clean this and make it in a proper way
 		bonesWorldPos.clear();
-		bonesWorldPos.reserve(skeleton.boneCount);
-
-		skeleton.bindPose.boneTransforms[0].GetTransformMatrix();
 		
 		for (int i = 0; i < skeleton.boneCount; i++)
 			bonesWorldPos.push_back((skeletonPose.GetBoneWorldPosition(&skeleton, i) * skeleton.bindPose.GetBoneWorldPosRecursif(&skeleton, i).getInverseMatrix()).getTransposedMatrix()); 
