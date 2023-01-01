@@ -8,11 +8,11 @@ The goal is to learn the basics of the animation programming.*
 
 First, we needed to create our quaternions in ou maths library
 
-![png](screenshots/quat.png)
+![png](screenshots/Quat.png)
 
 In parallel, we started to read and draw the skeleton of the model in the bind pose.
 
-![png](screenshots/skeleton.png)
+![png](screenshots/Skeleton.png)
 
 For the moment, there was zero difficulties to implement thoses features. But it's just the begining...
 
