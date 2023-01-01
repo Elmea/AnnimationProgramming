@@ -43,7 +43,7 @@ our matrix like collumn majors ones, but they are row majors.
 
 So we needed to adapt ou matrices's product to get the expected result.
 
-![gif](screenshots/result.gif)
+![gif](screenshots/Result.gif)
 
 ## Some cutted feature
 ---
