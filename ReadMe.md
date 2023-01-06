@@ -3,7 +3,7 @@
 *This project is a isart digital's school project.
 The goal is to learn the basics of the animation programming.*
 
-Our team : [Nino Masseteau](https://github.com/Elmea) [Alexandre Gauthier](https://github.com/Lagaffe91)
+Our team : [Nino Masseteau](https://github.com/Elmea) [Camille Gauthier](https://github.com/Lagaffe91)
 
 ## First steps
 ---
